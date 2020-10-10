@@ -1,4 +1,13 @@
 
+@keyframes Dice-rolling {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .Dice {
     display: flex;
     align-items: center;
@@ -32,6 +41,10 @@
 .Dice[data-type='visibility'],
 .Dice[data-type='movement'] {
     --die-color: rgb(26, 26, 167);
+}
+
+.Dice[data-state='rolling'] .Dice-die {
+    animation: Dice-rolling linear 0.2s;
 }
 
 .Dice-type {

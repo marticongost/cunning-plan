@@ -7,7 +7,7 @@ const digits = '0123456789';
 
 export default function Dice(props) {
 
-    const {results, type, onAmountChanged} = props;
+    const {state, results, type, onAmountChanged} = props;
 
     function setAmount(amount) {
         if (onAmountChanged) {
@@ -48,9 +48,11 @@ export default function Dice(props) {
         }
     }
 
+
     return (
         <div
             className="Dice"
+            data-state={state}
             data-type={type.id}
             data-shortcut={type.shortcut.toLowerCase()}
             tabIndex="-1"
@@ -85,7 +87,7 @@ export default function Dice(props) {
             <div className="Dice-results">
                 {results.map((face, index) =>
                     <div className="Dice-die" key={index}>
-                        <face.icon key={index}/>
+                        {face ? <face.icon/> : null}
                     </div>
                 )}
             </div>

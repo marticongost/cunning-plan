@@ -8,6 +8,7 @@ export default function AttackSimulator() {
 
     const [attackType, setAttackType] = useState(attackTypes[0]);
     const [range, setRange] = useState(0);
+    const [rolling, setRolling] = useState(false);
 
     const initialDiceBuckets = {};
     for (let diceBucket of [
@@ -25,12 +26,15 @@ export default function AttackSimulator() {
 
     const [diceBuckets, setDiceBuckets] = useState(initialDiceBuckets);
 
+    function updateDiceBuckets() {
+        setDiceBuckets(Object.assign({}, diceBuckets));
+    }
+
     function updateDiceAmounts(diceToSet) {
-        const newDiceBuckets = Object.assign({}, diceBuckets);
         for (let diceTypeId in diceToSet) {
-            newDiceBuckets[diceTypeId].setAmount(diceToSet[diceTypeId]);
+            diceBuckets[diceTypeId].setAmount(diceToSet[diceTypeId]);
         }
-        setDiceBuckets(newDiceBuckets);
+        updateDiceBuckets();
     }
 
     function handleAttackTypeSelectorChanged(e) {
@@ -63,6 +67,15 @@ export default function AttackSimulator() {
         });
     }
 
+    function handleRollButtonClick(e) {
+        for (let diceTypeId in diceBuckets) {
+            diceBuckets[diceTypeId].roll();
+        }
+        setRolling(true);
+        updateDiceBuckets();
+        setTimeout(() => setRolling(false), 200);
+    }
+
     let rangeOptions;
     if (attackType.ranges && attackType.ranges.length) {
         rangeOptions = attackType.ranges.map((range, index) =>
@@ -82,6 +95,7 @@ export default function AttackSimulator() {
                     key={diceType.id}
                     type={diceType}
                     results={diceBuckets[id].results}
+                    state={rolling ? 'rolling' : 'resting'}
                     onAmountChanged={(amount) => updateDiceAmounts({[id]: amount})}/>
             );
         }
@@ -105,6 +119,12 @@ export default function AttackSimulator() {
                     value={range}>
                     {rangeOptions}
                 </select>
+                <button
+                    className="AttackSimulator-rollButton"
+                    type="button"
+                    onClick={handleRollButtonClick}>
+                    Tirar
+                </button>
             </div>
             <div className="AttackSimulator-diceCategories">
                 <section className="AttackSimulator-attacker">
@@ -132,6 +152,22 @@ class DiceBucket {
         this.results = [];
         while (amount--) {
             this.results.push(diceType.faces[0]);
+        }
+    }
+
+    roll() {
+        for (let i = 0; i < this.results.length; i++) {
+            const value = Math.floor(Math.random() * 6) + 1;
+            let n = 0;
+            let result = null;
+            for (let face of this.diceType.faces) {
+                n += face.number;
+                if (n >= value) {
+                    result = face;
+                    break;
+                }
+            }
+            this.results[i] = result;
         }
     }
 
