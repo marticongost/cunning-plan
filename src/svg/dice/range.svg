@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg4"
+   enable-background="new 0 0 100 100"
+   viewBox="0 0 100 100"
+   y="0px"
+   x="0px"
+   version="1.1"
+   width="100"
+   height="100"
+   style="fill:#000080">
+     <polygon
+     transform="matrix(0.83050847,0,0,0.83050847,8.4745763,8.4745763)"
+     id="polygon2"
+     points="5,38.703 15.742,38.703 15.752,23.307 76.685,84.243 61.297,84.239 61.297,95 95,95 95,61.297 84.21,61.297 84.248,76.693 23.313,15.757 38.701,15.756 38.701,5 5,5 " />
+</svg>

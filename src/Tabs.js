@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Tabs.css';
+import './css/Tabs.css';
 
 export function Tabs(props) {
 
