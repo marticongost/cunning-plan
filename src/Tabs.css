@@ -1,0 +1,41 @@
+
+.Tabs-strip {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+
+.Tabs-strip li {
+    margin: 0;
+    padding: 0;
+}
+
+.Tabs-strip li + li {
+    margin-left: 1.5em;
+}
+
+.TabButton {
+    font-size: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    padding-bottom: 0.3em;
+    border-bottom: 4px solid transparent;
+    outline: none;
+}
+
+.TabButton[data-tab-state='hidden'] {
+    color: #999;
+}
+
+.TabButton[data-tab-state='visible'] {
+    color: #333;
+    border-bottom-color: #ccc;
+}
+
+.Tab[data-tab-state='hidden'] {
+    display: none;
+}
