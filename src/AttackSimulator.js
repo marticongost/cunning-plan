@@ -51,7 +51,7 @@ function AttackSimulatorControls(props) {
     let rangeOptions;
     if (attackType.ranges && attackType.ranges.length) {
         rangeOptions = attackType.ranges.map((range, index) =>
-            <option key={index} value={index}>Menys de {range.max}</option>
+            <option key={index} value={index}>Menys de {range.max} cm</option>
         );
     }
     else {
