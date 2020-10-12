@@ -1,19 +1,23 @@
 
-.AttackSimulator select {
+.RollSimulator select {
     font-size: 1.05em;
     padding: 0.4em;
 }
 
-.AttackSimulator-controls > * + * {
+.RollSimulator-controls > * + * {
     margin-left: 1em;
 }
 
-.AttackSimulator-diceCategories {
+.RollSimulator-diceGroups {
     display: flex;
     margin-top: 2em;
 }
 
-.AttackSimulator section h1 {
+.RollSimulator-diceGroup + .RollSimulator-diceGroup {
+    margin-left: 4em;
+}
+
+.RollSimulator-diceGroupHeading {
     margin-top: 0;
     padding-bottom: 0.3em;
     border-bottom: 2px solid #ddd;
@@ -23,11 +27,7 @@
     color: #333;
 }
 
-.AttackSimulator-defender {
-    margin-left: 4em;
-}
-
-.AttackSimulator-rollButton {
+.RollSimulator-rollButton {
     background-color: #333;
     color: white;
     border: none;
@@ -37,6 +37,6 @@
     cursor: pointer;
 }
 
-.AttackSimulator-rollButton:hover {
+.RollSimulator-rollButton:hover {
     background-color: black;
 }

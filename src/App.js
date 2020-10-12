@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Tabs, Tab } from './Tabs';
 import AttackSimulator from './AttackSimulator';
 import './css/App.css';
+import ShockSimulator from './ShockSimulator';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
                     Zaaap
                 </Tab>
                 <Tab name="shock" title="Xoc">
-                    Oghhh
+                    <ShockSimulator />
                 </Tab>
             </Tabs>
         </div>
