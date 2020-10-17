@@ -159,10 +159,35 @@ export class DiceBucket {
                     bucketChanged = true;
                     die.consumed = true;
                     die.state = {
-                        id: 'beingReplaced',
+                        id: 'faceDisappearing',
                         replacement: effect.replacement,
                         effect
                     };
+                }
+            }
+            else if (effect.effect === 'transform') {
+                const targetDice = this.nonConsumedResults(effect.target);
+                for (let triggerDie of this.nonConsumedResults(effect.trigger)) {
+                    const targetDie = targetDice.shift();
+                    if (targetDie) {
+                        bucketChanged = true;
+                        triggerDie.consumed = true;
+                        triggerDie.state = {
+                            id: 'canceling',
+                            effect,
+                            triggerDie
+                        };
+                        targetDie.consumed = true;
+                        targetDie.state = {
+                            id: 'faceDisappearing',
+                            replacement: effect.replacement,
+                            effect,
+                            triggerDie
+                        };
+                    }
+                    else {
+                        break;
+                    }
                 }
             }
         }

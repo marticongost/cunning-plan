@@ -71,6 +71,21 @@ export default function RollSimulator(props) {
                                 if (die.state.id === 'canceling') {
                                     die.state.id = 'canceled';
                                 }
+                                else if (die.state.id === 'faceDisappearing') {
+                                    if (die.state.replacement) {
+                                        die.state.id = 'faceAppearing';
+                                        for (let face of die.diceType.faces) {
+                                            if (face.id === die.state.replacement) {
+                                                die.result = face;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        die.state = Die.RESTING;
+                                        die.result = '';
+                                    }
+                                }
                             }
                             setDiceBucket(finalDiceBucket);
                         }, 200);
