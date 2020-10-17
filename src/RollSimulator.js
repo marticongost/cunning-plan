@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import diceTypes from './dicetypes';
 import Dice from './Dice';
+import { DiceBucket, Die } from './dicebucket';
 import './css/RollSimulator.css';
 
 export default function RollSimulator(props) {
 
-    const {diceGroups, Controls, initialSettings, dicePresets} = props;
-    const [settings, setSettings] = useState(initialSettings);
-    const [rolling, setRolling] = useState(false);
+    const {
+        diceGroups,
+        Controls,
+        initialSettings,
+        dicePresets,
+        diceEffects
+    } = props;
 
-    const initialDiceBuckets = {};
-    const initialPreset = dicePresets ? dicePresets(settings) : null;
-    for (let diceGroup of diceGroups) {
-        for (let diceTypeId of diceGroup.diceTypes) {
-            initialDiceBuckets[diceTypeId] = new DiceBucket(
-                diceTypeId,
-                (initialPreset && initialPreset[diceTypeId]) || 0
-            );
-        }
-    }
-    const [diceBuckets, setDiceBuckets] = useState(initialDiceBuckets);
+    const [settings, setSettings] = useState(initialSettings);
+    const [diceBucket, setDiceBucket] = useState(
+        () => new DiceBucket(dicePresets ? dicePresets(settings) : null)
+    );
 
     function updateSettings(newValues) {
         const newSettings = Object.assign({}, settings, newValues);
@@ -29,37 +27,70 @@ export default function RollSimulator(props) {
         }
     }
 
-    function updateDiceBuckets() {
-        setDiceBuckets(Object.assign({}, diceBuckets));
-    }
-
     function updateDiceAmounts(diceToSet) {
-        for (let diceTypeId in diceToSet) {
-            diceBuckets[diceTypeId].setAmount(diceToSet[diceTypeId]);
-        }
-        updateDiceBuckets();
+        const newDiceBucket = diceBucket.clone();
+        newDiceBucket.setAmounts(diceToSet);
+        setDiceBucket(newDiceBucket);
     }
 
     function handleRollButtonClick(e) {
-        for (let diceTypeId in diceBuckets) {
-            diceBuckets[diceTypeId].roll();
+
+        // Start the roll animation
+        const rollingDiceBucket = diceBucket.clone();
+        rollingDiceBucket.roll();
+        setDiceBucket(rollingDiceBucket);
+
+        function afterRoll() {
+
+            // End the roll animation
+            const afterRollDiceBucket = rollingDiceBucket.clone();
+            afterRollDiceBucket.setDiceState(Die.RESTING);
+            setDiceBucket(afterRollDiceBucket);
+
+            // Apply dice effects
+            if (diceEffects) {
+                const diceEffectsForRoll = diceEffects(
+                    settings,
+                    afterRollDiceBucket.getAmounts(),
+                    afterRollDiceBucket.getResultCount()
+                );
+                if (diceEffectsForRoll && diceEffectsForRoll.length) {
+                    const transformingDiceBucket = afterRollDiceBucket.clone();
+                    if (
+                        transformingDiceBucket.resolveEffects(
+                            diceEffectsForRoll
+                        )
+                    ) {
+                        setDiceBucket(transformingDiceBucket);
+                        setTimeout(() => {
+                            // End the dice effects animations
+                            const finalDiceBucket = (
+                                transformingDiceBucket.clone()
+                            );
+                            for (let die of finalDiceBucket) {
+                                if (die.state.id === 'canceling') {
+                                    die.state.id = 'canceled';
+                                }
+                            }
+                            setDiceBucket(finalDiceBucket);
+                        }, 200);
+                    }
+                }
+            }
         }
-        setRolling(true);
-        updateDiceBuckets();
-        setTimeout(() => setRolling(false), 200);
+        setTimeout(afterRoll, 200);
     }
 
     function diceList(types) {
         const elements = [];
-        for (let id of types) {
-            const diceType = diceTypes[id];
+        for (let diceTypeId of types) {
+            const diceType = diceTypes[diceTypeId];
             elements.push(
                 <Dice
-                    key={diceType.id}
+                    key={diceTypeId}
                     type={diceType}
-                    results={diceBuckets[id].results}
-                    state={rolling ? 'rolling' : 'resting'}
-                    onAmountChanged={(amount) => updateDiceAmounts({[id]: amount})}/>
+                    dice={diceBucket.getDiceOfType(diceTypeId)}
+                    onAmountChanged={(amount) => updateDiceAmounts({[diceTypeId]: amount})}/>
             );
         }
         return elements;
@@ -69,8 +100,7 @@ export default function RollSimulator(props) {
         Controls ?
             <Controls
                 settings={settings}
-                onSettingsChanged={updateSettings}
-                onDiceAmountsChanged={updateDiceAmounts}/>
+                onSettingsChanged={updateSettings}/>
             : null
     );
 
@@ -98,49 +128,4 @@ export default function RollSimulator(props) {
             </div>
         </div>
     );
-}
-
-class DiceBucket {
-
-    constructor(diceType, amount = 0) {
-
-        if (typeof(diceType) == 'string') {
-            diceType = diceTypes[diceType];
-        }
-
-        this.diceType = diceType;
-        this.results = [];
-        while (amount--) {
-            this.results.push(diceType.faces[0]);
-        }
-    }
-
-    roll() {
-        for (let i = 0; i < this.results.length; i++) {
-            const value = Math.floor(Math.random() * 6) + 1;
-            let n = 0;
-            let result = null;
-            for (let face of this.diceType.faces) {
-                n += face.number;
-                if (n >= value) {
-                    result = face;
-                    break;
-                }
-            }
-            this.results[i] = result;
-        }
-    }
-
-    setAmount(amount) {
-        if (amount > this.results.length) {
-            while (amount > this.results.length) {
-                this.results.push(this.diceType.faces[0]);
-            }
-        }
-        else if (amount < this.results.length) {
-            while (amount < this.results.length) {
-                this.results.pop();
-            }
-        }
-    }
 }

@@ -21,19 +21,19 @@ const attackTypes = [
         ],
         special: [
             {
-                cancel: {
-                    type: ['movement'],
-                    max: 1
-                }
+                effect: 'cancel',
+                targets: ['movement']
             },
             {
-                treatAs: 'critical',
+                effect: 'treatAs',
+                replacement: 'critical',
                 requires: {
                     range: [0]
                 }
             },
             {
-                treatAs: 'hit',
+                effect: 'treatAs',
+                replacement: 'hit',
                 requires: {
                     range: [1]
                 }
@@ -51,16 +51,15 @@ const attackTypes = [
         ],
         special: [
             {
-                cancel: {
-                    type: ['range'],
-                    max: 1
-                },
+                effect: 'cancel',
+                target: ['range'],
                 requires: {
                     movement: [0]
                 }
             },
             {
-                treatAs: 'critical',
+                effect: 'treatAs',
+                replacement: 'critical',
                 requires: {
                     range: [0]
                 }
@@ -79,7 +78,8 @@ const attackTypes = [
         ],
         special: [
             {
-                treatAs: 'critical',
+                effect: 'treatAs',
+                replacement: 'critical',
                 requires: {
                     cover: [0]
                 }

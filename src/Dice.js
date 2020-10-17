@@ -7,23 +7,23 @@ const digits = '0123456789';
 
 export default function Dice(props) {
 
-    const {state, results, type, onAmountChanged} = props;
+    const {dice, type, onAmountChanged} = props;
 
     function setAmount(amount) {
         if (onAmountChanged) {
             amount = Math.max(0, amount);
-            if (amount !== results.length) {
+            if (amount !== dice.length) {
                 onAmountChanged(amount);
             }
         }
     }
 
     function handleAddButtonClick(e) {
-        setAmount(results.length + 1);
+        setAmount(dice.length + 1);
     }
 
     function handleRemoveButtonClick(e) {
-        setAmount(results.length - 1);
+        setAmount(dice.length - 1);
     }
 
     function handleChange(e) {
@@ -35,10 +35,10 @@ export default function Dice(props) {
 
     function handleKeyDown(e) {
         if (e.key === '+') {
-            setAmount(results.length + 1);
+            setAmount(dice.length + 1);
         }
         else if (e.key === '-') {
-            setAmount(results.length - 1);
+            setAmount(dice.length - 1);
         }
         else if (e.key.length === 1) {
             const index = digits.indexOf(e.key);
@@ -48,11 +48,9 @@ export default function Dice(props) {
         }
     }
 
-
     return (
         <div
             className="Dice"
-            data-state={state}
             data-type={type.id}
             data-shortcut={type.shortcut.toLowerCase()}
             tabIndex="-1"
@@ -68,7 +66,7 @@ export default function Dice(props) {
                 <input
                     className="Dice-input"
                     type="number"
-                    value={results.length}
+                    value={dice.length}
                     min="0"
                     onChange={handleChange}/>
                 <button
@@ -84,10 +82,13 @@ export default function Dice(props) {
                     <AddIcon/>
                 </button>
             </div>
-            <div className="Dice-results">
-                {results.map((face, index) =>
-                    <div className="Dice-die" key={index}>
-                        {face ? <face.icon/> : null}
+            <div className="Dice-dice">
+                {dice.map((die, index) =>
+                    <div
+                        key={index}
+                        className="Dice-die"
+                        data-state={die.state.id}>
+                        {die.result ? <die.result.icon/> : null}
                     </div>
                 )}
             </div>

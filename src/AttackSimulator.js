@@ -38,7 +38,46 @@ export default function AttackSimulator() {
                     title: "Defensor",
                     diceTypes: ["veterancy", "range", "cover", "visibility"]
                 }
-            ]}/>
+            ]}
+            diceEffects={(settings, diceAmounts, results) => [
+                {
+                    effect: 'choices',
+                    limit: results.special,
+                    choices: (
+                        (settings.attackType.specials || [])
+                        .filter(
+                            special => !special.requires || (
+                                (
+                                    special.requires.range === undefined
+                                    || special.requires.range.includes(settings.range)
+                                )
+                                && (
+                                    special.requires.movement === undefined
+                                    || special.requires.movement.includes(diceAmounts.movement)
+                                )
+                            )
+                        )
+                        .map(special => {
+                            return {trigger: ['special'], ...special};
+                        })
+                    )
+                },
+                {
+                    effect: 'cancel',
+                    trigger: ['movement', 'range', 'cover', 'visibility'],
+                    target: ['critical', 'hit']
+                },
+                {
+                    effect: 'cancel',
+                    trigger: ['veterancy'],
+                    target: ['hit']
+                }
+            ]}
+            diceScore={results =>
+                (results.critical || 0) * 100000
+                + (results.supression || 0) * 1000
+                + (results.hits || 0)
+            }/>
     );
 }
 

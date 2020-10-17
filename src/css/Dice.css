@@ -8,6 +8,15 @@
     }
 }
 
+@keyframes Dice-canceling {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
 .Dice {
     display: flex;
     align-items: center;
@@ -43,8 +52,16 @@
     --die-color: rgb(26, 26, 167);
 }
 
-.Dice[data-state='rolling'] .Dice-die {
+.Dice-die[data-state='rolling'] {
     animation: Dice-rolling linear 0.2s;
+}
+
+.Dice-die[data-state='canceling'] {
+    animation: Dice-canceling linear 0.2s;
+}
+
+.Dice-die[data-state='canceled'] {
+    opacity: 0.3;
 }
 
 .Dice-type {
@@ -102,7 +119,7 @@
     fill: #333;
 }
 
-.Dice-results {
+.Dice-dice {
     width: 17em;
     margin-left: 2em;
     display: flex;

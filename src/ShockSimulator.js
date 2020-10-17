@@ -10,6 +10,19 @@ export default function ShockSimulator() {
                     id: "shock",
                     diceTypes: ["shock", "veterancy"]
                 }
+            ]}
+            diceEffects={(settings, diceAmounts, results) => [
+                {
+                    effect: 'cancel',
+                    trigger: ['veterancy'],
+                    target: ['shock']
+                },
+                {
+                    effect: 'transform',
+                    trigger: ['veterancy'],
+                    target: ['disordered'],
+                    replacement: 'shock'
+                }
             ]}/>
     );
 }
