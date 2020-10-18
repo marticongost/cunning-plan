@@ -67,7 +67,7 @@ export default function RollSimulator(props) {
             for (let i = 0; i < predictions.length; i++) {
                 chances.push(0);
             }
-            for (let n = 0; n < 10000; n++) {
+            for (let n = 0; n < 1000; n++) {
                 bruteForcePredictionRoll.roll();
                 if (diceEffects) {
                     const diceEffectsForRoll = diceEffects(
@@ -186,7 +186,7 @@ export default function RollSimulator(props) {
                         (prediction, index) =>
                             <div key={index}>
                                 <dt>{prediction.title}</dt>
-                                <dd>{Math.round(state.predictionResults[index] / 100)} %</dd>
+                                <dd>{Math.round(state.predictionResults[index] / 10)} %</dd>
                             </div>
                     )}
                 </dl>
