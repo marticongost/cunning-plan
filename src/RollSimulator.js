@@ -16,34 +16,50 @@ export default function RollSimulator(props) {
         predictions
     } = props;
 
-    const [settings, setSettings] = useState(initialSettings);
-    const [diceBucket, setDiceBucket] = useState(
-        () => new DiceBucket(
-            dicePresets ? dicePresets(settings) : null,
-            scoringWeights
-        )
-    );
-    const [predictionResults, setPredictionResults] = useState(
-        () => getPredictionResults(diceBucket)
+    const [state, setState] = useState(
+        () => {
+            const state = {
+                diceBucket: new DiceBucket(
+                    dicePresets ? dicePresets(initialSettings) : null,
+                    scoringWeights
+                ),
+                settings: initialSettings
+            };
+            state.predictionResults = getPredictionResults(state);
+            return state;
+        }
     );
 
+    function updateState(changes) {
+        const newState = Object.assign({}, state, changes);
+        newState.predictionResults = getPredictionResults(newState);
+        setState(newState);
+    }
+
     function updateSettings(newValues) {
-        const newSettings = Object.assign({}, settings, newValues);
-        setSettings(newSettings);
+        const newState = {
+            settings: Object.assign({}, state.settings, newValues)
+        };
         if (dicePresets) {
-            updateDiceAmounts(dicePresets(newSettings));
+            const newDiceBucket = state.diceBucket.clone();
+            newDiceBucket.setAmounts(dicePresets(newState.settings));
+            newState.diceBucket = newDiceBucket;
         }
+        updateState(newState);
     }
 
     function updateDiceAmounts(diceToSet) {
-        const newDiceBucket = diceBucket.clone();
+        const newDiceBucket = state.diceBucket.clone();
         newDiceBucket.setAmounts(diceToSet);
-        setPredictionResults(getPredictionResults(newDiceBucket));
-        setDiceBucket(newDiceBucket);
+        updateState({diceBucket: newDiceBucket});
     }
 
-    function getPredictionResults(diceBucket) {
-        let bruteForcePredictionRoll = diceBucket.clone();
+    function updateDiceBucket(diceBucket) {
+        setState(Object.assign({}, state, {diceBucket}));
+    }
+
+    function getPredictionResults(state) {
+        let bruteForcePredictionRoll = state.diceBucket.clone();
         const chances = [];
         const amounts = bruteForcePredictionRoll.getAmounts();
 
@@ -55,7 +71,7 @@ export default function RollSimulator(props) {
                 bruteForcePredictionRoll.roll();
                 if (diceEffects) {
                     const diceEffectsForRoll = diceEffects(
-                        settings,
+                        state.settings,
                         amounts,
                         bruteForcePredictionRoll.getResultCount()
                     );
@@ -82,21 +98,21 @@ export default function RollSimulator(props) {
     function handleRollButtonClick(e) {
 
         // Start the roll animation
-        const rollingDiceBucket = diceBucket.clone();
+        const rollingDiceBucket = state.diceBucket.clone();
         rollingDiceBucket.roll();
-        setDiceBucket(rollingDiceBucket);
+        updateDiceBucket(rollingDiceBucket);
 
         function afterRoll() {
 
             // End the roll animation
             const afterRollDiceBucket = rollingDiceBucket.clone();
             afterRollDiceBucket.setDiceState(Die.RESTING);
-            setDiceBucket(afterRollDiceBucket);
+            updateDiceBucket(afterRollDiceBucket);
 
             // Apply dice effects
             if (diceEffects) {
                 const diceEffectsForRoll = diceEffects(
-                    settings,
+                    state.settings,
                     afterRollDiceBucket.getAmounts(),
                     afterRollDiceBucket.getResultCount()
                 );
@@ -111,7 +127,7 @@ export default function RollSimulator(props) {
                             console.log(die.result, die.effectiveResult, die.state);
                         }
                         console.groupEnd();
-                        setDiceBucket(effectsDiceBucket);
+                        updateDiceBucket(effectsDiceBucket);
                         function changeStates() {
                             let changesRemain = false;
                             effectsDiceBucket = effectsDiceBucket.clone();
@@ -126,7 +142,7 @@ export default function RollSimulator(props) {
                                     );
                                 }
                             }
-                            setDiceBucket(effectsDiceBucket);
+                            updateDiceBucket(effectsDiceBucket);
                             if (changesRemain) {
                                 setTimeout(changeStates, 200);
                             }
@@ -147,7 +163,7 @@ export default function RollSimulator(props) {
                 <Dice
                     key={diceTypeId}
                     type={diceType}
-                    dice={diceBucket.getDiceOfType(diceTypeId)}
+                    dice={state.diceBucket.getDiceOfType(diceTypeId)}
                     onAmountChanged={(amount) => updateDiceAmounts({[diceTypeId]: amount})}/>
             );
         }
@@ -157,7 +173,7 @@ export default function RollSimulator(props) {
     const controls = (
         Controls ?
             <Controls
-                settings={settings}
+                settings={state.settings}
                 onSettingsChanged={updateSettings}/>
             : null
     );
@@ -170,7 +186,7 @@ export default function RollSimulator(props) {
                         (prediction, index) =>
                             <div key={index}>
                                 <dt>{prediction.title}</dt>
-                                <dd>{Math.round(predictionResults[index] / 100)} %</dd>
+                                <dd>{Math.round(state.predictionResults[index] / 100)} %</dd>
                             </div>
                     )}
                 </dl>
