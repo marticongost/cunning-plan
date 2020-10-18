@@ -39,12 +39,17 @@ export default function AttackSimulator() {
                     diceTypes: ["veterancy", "range", "cover", "visibility"]
                 }
             ]}
+            scoringWeights={{
+                critical: 10000,
+                supression: 100,
+                hit: 1
+            }}
             diceEffects={(settings, diceAmounts, results) => [
                 {
                     effect: 'choices',
-                    limit: results.special,
+                    limit: results.special || 0,
                     choices: (
-                        (settings.attackType.specials || [])
+                        (settings.attackType.special || [])
                         .filter(
                             special => !special.requires || (
                                 (

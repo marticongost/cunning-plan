@@ -1,16 +1,18 @@
-import diceTypes from './dicetypes';
+import { diceResults, diceTypes } from './dicetypes';
+import { permutations, kCombinations, cartesianProduct } from './combinations';
 
 export class DiceBucket {
 
-    constructor(diceToSet = null) {
+    constructor(diceToSet = null, scoringWeights = null) {
         this.dice = {};
+        this.scoringWeights = scoringWeights || {};
         if (diceToSet) {
             this.setAmounts(diceToSet);
         }
     }
 
     clone() {
-        const clone = new this.constructor();
+        const clone = new this.constructor(null, this.scoringWeights);
         for (let diceTypeId in this.dice) {
             clone.dice[diceTypeId] = (
                 this.dice[diceTypeId].map(die => die.clone())
@@ -42,9 +44,15 @@ export class DiceBucket {
     }
 
     roll() {
+        window.cunningplan.lastRolls = [];
+        window.cunningplan.currentRoll = 0;
         for (let die of this) {
             die.roll();
         }
+        localStorage.setItem(
+            'cunningplan.lastRolls',
+            JSON.stringify(window.cunningplan.lastRolls)
+        );
     }
 
     getResultCount() {
@@ -55,6 +63,20 @@ export class DiceBucket {
             }
         }
         return count;
+    }
+
+    getScore() {
+
+        let score = 0;
+
+        for (let die of this) {
+            const result = die.effectiveResult;
+            if (result) {
+                score += this.scoringWeights[result.id] || 0;
+            }
+        }
+
+        return score;
     }
 
     getAmounts() {
@@ -98,7 +120,7 @@ export class DiceBucket {
         }
     }
 
-    nonConsumedResults(type) {
+    getResults(type) {
 
         const results = [];
         let resultIds;
@@ -112,11 +134,8 @@ export class DiceBucket {
 
         for (let resultId of resultIds) {
             for (let die of this) {
-                if (
-                    die.result
-                    && die.result.id === resultId
-                    && !die.consumed
-                ) {
+                const result = die.effectiveResult;
+                if (result && result.id === resultId) {
                     results.push(die);
                 }
             }
@@ -127,27 +146,78 @@ export class DiceBucket {
 
     resolveEffects(diceEffects) {
 
-        let bucketChanged = false;
+        // If there are 1+ choice effects, try out all of their possible
+        // combinations and apply the one with the best outcome
+        const choiceEffects = diceEffects.filter(
+            effect => (
+                effect.effect === 'choices'
+                && effect.limit !== 0
+            )
+        );
+
+        if (choiceEffects.length) {
+            let bestScore = null;
+            let bucketWithBestScore = null;
+            const allEffectPermutations = []
+
+            for (let effect of choiceEffects) {
+
+                for (let choice of effect.choices) {
+                    choice.limit = 1;
+                }
+
+                const effectPermutations = [];
+                allEffectPermutations.push(effectPermutations);
+                for (let choices of kCombinations(
+                    effect.choices,
+                    effect.limit || effect.choices.length
+                )) {
+                    effectPermutations.push(permutations(choices));
+                }
+            }
+
+            for (let choices of cartesianProduct(allEffectPermutations)) {
+                const effectsCombination = [];
+                for (let effect of diceEffects) {
+                    if (effect.effect === 'choices') {
+                        effectsCombination.push(...choices.shift());
+                    }
+                    else {
+                        effectsCombination.push(effect);
+                    }
+                }
+                const choicesBucket = this.resolveEffects(effectsCombination);
+                if (choicesBucket) {
+                    const choicesScore = choicesBucket.getScore();
+                    if (bestScore === null || choicesScore > bestScore) {
+                        bestScore = choicesScore;
+                        bucketWithBestScore = choicesBucket;
+                    }
+                }
+            }
+
+            return bucketWithBestScore;
+        }
+
+        const bucket = this.clone();
+        let bucketTransformed = false;
 
         for (let effect of diceEffects) {
+            let uses = 0;
+
             if (effect.effect === 'cancel') {
-                const targetDice = this.nonConsumedResults(effect.target);
-                for (let triggerDie of this.nonConsumedResults(effect.trigger)) {
+                const targetDice = bucket.getResults(effect.target);
+                for (let triggerDie of bucket.getResults(effect.trigger)) {
                     const targetDie = targetDice.shift();
                     if (targetDie) {
-                        bucketChanged = true;
-                        triggerDie.consumed = true;
-                        triggerDie.state = {
-                            id: 'canceling',
-                            effect,
-                            triggerDie
-                        };
-                        targetDie.consumed = true;
-                        targetDie.state = {
-                            id: 'canceling',
-                            effect,
-                            triggerDie
-                        };
+                        bucketTransformed = true;
+                        const context = {effect, triggerDie};
+                        triggerDie.cancel(context);
+                        targetDie.cancel(context);
+                        uses++;
+                        if (effect.limit && uses === effect.limit) {
+                            break;
+                        }
                     }
                     else {
                         break;
@@ -155,35 +225,29 @@ export class DiceBucket {
                 }
             }
             else if (effect.effect === 'treatAs') {
-                for (let die of this.nonConsumedResults(effect.trigger)) {
-                    bucketChanged = true;
-                    die.consumed = true;
-                    die.state = {
-                        id: 'faceDisappearing',
-                        replacement: effect.replacement,
-                        effect
-                    };
+                for (let die of bucket.getResults(effect.trigger)) {
+                    bucketTransformed = true;
+                    const context = {effect, triggerDie: this};
+                    die.replace(effect.replacement, context);
+                    uses++;
+                    if (effect.limit && uses === effect.limit) {
+                        break;
+                    }
                 }
             }
             else if (effect.effect === 'transform') {
-                const targetDice = this.nonConsumedResults(effect.target);
-                for (let triggerDie of this.nonConsumedResults(effect.trigger)) {
+                const targetDice = bucket.getResults(effect.target);
+                for (let triggerDie of bucket.getResults(effect.trigger)) {
                     const targetDie = targetDice.shift();
                     if (targetDie) {
-                        bucketChanged = true;
-                        triggerDie.consumed = true;
-                        triggerDie.state = {
-                            id: 'canceling',
-                            effect,
-                            triggerDie
-                        };
-                        targetDie.consumed = true;
-                        targetDie.state = {
-                            id: 'faceDisappearing',
-                            replacement: effect.replacement,
-                            effect,
-                            triggerDie
-                        };
+                        bucketTransformed = true;
+                        const context = {effect, triggerDie};
+                        triggerDie.cancel(context);
+                        targetDie.replace(effect.replacement, context);
+                        uses++;
+                        if (effect.limit && uses === effect.limit) {
+                            break;
+                        }
                     }
                     else {
                         break;
@@ -192,34 +256,98 @@ export class DiceBucket {
             }
         }
 
-        return bucketChanged;
+        return bucketTransformed ? bucket : null;
     }
 }
 
 export class Die {
 
-    constructor(diceType, result = null, state = null, consumed = false) {
+    constructor(diceType, result = null, state = null) {
         this.diceType = diceType;
         this.result = result === null ? diceType.faces[0] : result;
         this.state = state || Die.RESTING;
-        this.consumed = consumed;
     }
 
     clone() {
         return new this.constructor(
             this.diceType,
             this.result,
-            this.state,
-            this.consumed
+            this.state
         );
     }
 
+    get effectiveResult() {
+
+        let result = this.result;
+        let state = this.state;
+
+        do {
+            if (state.id === 'canceling' || state.id === 'canceled') {
+                result = '';
+            }
+            else if (state.replacement) {
+                result = state.replacement;
+            }
+            state = state.nextState;
+        } while (state);
+
+        return result;
+    }
+
+    pushState(state) {
+        if (this.state === Die.RESTING || this.state === Die.ROLLING) {
+            this.state = state;
+        }
+        else {
+            this.getFinalState().nextState = state;
+        }
+    }
+
+    getFinalState() {
+        let state = this.state;
+        while (state.nextState) {
+            state = state.nextState;
+        }
+        return state;
+    }
+
+    cancel(context) {
+        this.pushState({
+            id: 'canceling',
+            ...context,
+            nextState: {
+                id: 'canceled',
+                ...context
+            }
+        });
+    }
+
+    replace(replacement, context) {
+        this.pushState({
+            id: 'faceDisappearing',
+            ...context,
+            nextState: {
+                id: 'faceAppearing',
+                replacement: diceResults[replacement],
+                ...context
+            },
+        });
+    }
+
     roll() {
-        this.consumed = false;
         this.state = Die.ROLLING;
 
         // Roll the die, see if the rolled score is enough for any of its faces
-        const value = Math.floor(Math.random() * 6) + 1;
+        let value;
+        if (window.cunningplan.fixedRolls) {
+            value = (
+                window.cunningplan.fixedRolls[window.cunningplan.currentRoll++]
+            );
+        }
+        else {
+            value = Math.floor(Math.random() * 6) + 1;
+        }
+        window.cunningplan.lastRolls.push(value);
         let n = 0;
         for (let face of this.diceType.faces) {
             n += face.number;
@@ -236,3 +364,21 @@ export class Die {
 
 Die.RESTING = Object.freeze({id: 'resting'});
 Die.ROLLING = Object.freeze({id: 'rolling'});
+
+// Fixing roll results, for debugging. Using the browser console, obtain the
+// results of the last roll by checking the value of cunningplan.lastRolls; fix
+// them to reproduce them later by setting cunningplan.fixedRolls to that same
+// value. Set cunningplan.fixedRolls to null to roll randomly again.
+if (!window.cunningplan) {
+    window.cunningplan = {};
+    Object.assign(window.cunningplan, {
+        lastRolls: JSON.parse(
+            localStorage.getItem('cunningplan.lastRolls') || '[]'
+        ),
+        fixedRolls: null,
+        currentRoll: 0,
+        fixRolls: function () {
+            this.fixedRolls = this.lastRolls;
+        }
+    });
+}

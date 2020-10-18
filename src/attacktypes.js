@@ -22,7 +22,7 @@ const attackTypes = [
         special: [
             {
                 effect: 'cancel',
-                targets: ['movement']
+                target: ['movement']
             },
             {
                 effect: 'treatAs',

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import diceTypes from './dicetypes';
+import { diceTypes } from './dicetypes';
 import Dice from './Dice';
 import { DiceBucket, Die } from './dicebucket';
 import './css/RollSimulator.css';
@@ -11,12 +11,16 @@ export default function RollSimulator(props) {
         Controls,
         initialSettings,
         dicePresets,
-        diceEffects
+        diceEffects,
+        scoringWeights
     } = props;
 
     const [settings, setSettings] = useState(initialSettings);
     const [diceBucket, setDiceBucket] = useState(
-        () => new DiceBucket(dicePresets ? dicePresets(settings) : null)
+        () => new DiceBucket(
+            dicePresets ? dicePresets(settings) : null,
+            scoringWeights
+        )
     );
 
     function updateSettings(newValues) {
@@ -55,40 +59,37 @@ export default function RollSimulator(props) {
                     afterRollDiceBucket.getResultCount()
                 );
                 if (diceEffectsForRoll && diceEffectsForRoll.length) {
-                    const transformingDiceBucket = afterRollDiceBucket.clone();
-                    if (
-                        transformingDiceBucket.resolveEffects(
-                            diceEffectsForRoll
-                        )
-                    ) {
-                        setDiceBucket(transformingDiceBucket);
-                        setTimeout(() => {
-                            // End the dice effects animations
-                            const finalDiceBucket = (
-                                transformingDiceBucket.clone()
-                            );
-                            for (let die of finalDiceBucket) {
-                                if (die.state.id === 'canceling') {
-                                    die.state.id = 'canceled';
-                                }
-                                else if (die.state.id === 'faceDisappearing') {
+                    let effectsDiceBucket = afterRollDiceBucket.resolveEffects(
+                        diceEffectsForRoll
+                    );
+                    if (effectsDiceBucket) {
+                        console.group('Dice effects');
+                        console.log(afterRollDiceBucket.getResultCount());
+                        for (let die of effectsDiceBucket) {
+                            console.log(die.result, die.effectiveResult, die.state);
+                        }
+                        console.groupEnd();
+                        setDiceBucket(effectsDiceBucket);
+                        function changeStates() {
+                            let changesRemain = false;
+                            effectsDiceBucket = effectsDiceBucket.clone();
+                            for (let die of effectsDiceBucket) {
+                                if (die.state.nextState) {
+                                    die.state = die.state.nextState;
                                     if (die.state.replacement) {
-                                        die.state.id = 'faceAppearing';
-                                        for (let face of die.diceType.faces) {
-                                            if (face.id === die.state.replacement) {
-                                                die.result = face;
-                                                break;
-                                            }
-                                        }
+                                        die.result = die.state.replacement;
                                     }
-                                    else {
-                                        die.state = Die.RESTING;
-                                        die.result = '';
-                                    }
+                                    changesRemain = (
+                                        changesRemain || die.state.nextState
+                                    );
                                 }
                             }
-                            setDiceBucket(finalDiceBucket);
-                        }, 200);
+                            setDiceBucket(effectsDiceBucket);
+                            if (changesRemain) {
+                                setTimeout(changeStates, 200);
+                            }
+                        }
+                        setTimeout(changeStates, 200);
                     }
                 }
             }

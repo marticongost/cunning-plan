@@ -147,8 +147,13 @@ const diceTypes = {
     }
 };
 
+const diceResults = {}
+
 for (let id in diceTypes) {
     diceTypes[id].id = id;
+    for (let face of diceTypes[id].faces) {
+        diceResults[face.id] = face;
+    }
 }
 
-export default diceTypes;
+export { diceTypes, diceResults };
