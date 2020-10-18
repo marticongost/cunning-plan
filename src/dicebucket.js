@@ -65,6 +65,17 @@ export class DiceBucket {
         return count;
     }
 
+    getEffectiveResultCount() {
+        const count = {};
+        for (let die of this) {
+            const result = die.effectiveResult;
+            if (result) {
+                count[result.id] = (count[result.id] || 0) + 1;
+            }
+        }
+        return count;
+    }
+
     getScore() {
 
         let score = 0;

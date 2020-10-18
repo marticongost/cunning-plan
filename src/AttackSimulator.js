@@ -81,8 +81,23 @@ export default function AttackSimulator() {
             diceScore={results =>
                 (results.critical || 0) * 100000
                 + (results.supression || 0) * 1000
-                + (results.hits || 0)
-            }/>
+                + (results.hit || 0)
+            }
+            predictions={[
+                {
+                    title: 'Baixa',
+                    test: results => (results.critical || 0) > 0
+                },
+                {
+                    title: 'Xoc',
+                    test: results => (
+                        (results.critical || 0) < 1 && (
+                            (results.hit || 0) > 0
+                            || (results.supression || 0) > 0
+                        )
+                    )
+                }
+            ]}/>
     );
 }
 

@@ -12,7 +12,8 @@ export default function RollSimulator(props) {
         initialSettings,
         dicePresets,
         diceEffects,
-        scoringWeights
+        scoringWeights,
+        predictions
     } = props;
 
     const [settings, setSettings] = useState(initialSettings);
@@ -21,6 +22,9 @@ export default function RollSimulator(props) {
             dicePresets ? dicePresets(settings) : null,
             scoringWeights
         )
+    );
+    const [predictionResults, setPredictionResults] = useState(
+        () => getPredictionResults(diceBucket)
     );
 
     function updateSettings(newValues) {
@@ -34,7 +38,45 @@ export default function RollSimulator(props) {
     function updateDiceAmounts(diceToSet) {
         const newDiceBucket = diceBucket.clone();
         newDiceBucket.setAmounts(diceToSet);
+        setPredictionResults(getPredictionResults(newDiceBucket));
         setDiceBucket(newDiceBucket);
+    }
+
+    function getPredictionResults(diceBucket) {
+        let bruteForcePredictionRoll = diceBucket.clone();
+        const chances = [];
+        const amounts = bruteForcePredictionRoll.getAmounts();
+
+        if (predictions) {
+            for (let i = 0; i < predictions.length; i++) {
+                chances.push(0);
+            }
+            for (let n = 0; n < 10000; n++) {
+                bruteForcePredictionRoll.roll();
+                if (diceEffects) {
+                    const diceEffectsForRoll = diceEffects(
+                        settings,
+                        amounts,
+                        bruteForcePredictionRoll.getResultCount()
+                    );
+                    if (diceEffectsForRoll && diceEffectsForRoll.length) {
+                        bruteForcePredictionRoll = (
+                            bruteForcePredictionRoll.resolveEffects(
+                                diceEffectsForRoll
+                            )
+                            || bruteForcePredictionRoll
+                        );
+                    }
+                }
+                const results = bruteForcePredictionRoll.getEffectiveResultCount();
+                for (let i = 0; i < predictions.length; i++) {
+                    if (predictions[i].test(results)) {
+                        chances[i]++;
+                    }
+                }
+            }
+        }
+        return chances;
     }
 
     function handleRollButtonClick(e) {
@@ -120,6 +162,22 @@ export default function RollSimulator(props) {
             : null
     );
 
+    const predictionsSection = (
+        predictions ?
+            <div className="RollSimulator-predictions">
+                <dl>
+                    {predictions.map(
+                        (prediction, index) =>
+                            <div key={index}>
+                                <dt>{prediction.title}</dt>
+                                <dd>{Math.round(predictionResults[index] / 100)} %</dd>
+                            </div>
+                    )}
+                </dl>
+            </div>
+            : null
+    );
+
     return (
         <div className="RollSimulator">
             <div className="RollSimulator-controls">
@@ -130,6 +188,7 @@ export default function RollSimulator(props) {
                     onClick={handleRollButtonClick}>
                     Tirar
                 </button>
+                {predictionsSection}
             </div>
             <div className="RollSimulator-diceGroups">
                 {diceGroups.map(group =>

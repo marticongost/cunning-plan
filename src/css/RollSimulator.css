@@ -4,6 +4,11 @@
     padding: 0.4em;
 }
 
+.RollSimulator-controls {
+    display: flex;
+    align-items: center;
+}
+
 .RollSimulator-controls > * + * {
     margin-left: 1em;
 }
@@ -39,4 +44,35 @@
 
 .RollSimulator-rollButton:hover {
     background-color: black;
+}
+
+.RollSimulator-predictions {
+    margin-left: 3em;
+}
+
+.RollSimulator-predictions dl {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.RollSimulator-predictions dl div {
+    display: flex;
+    flex-direction: column;
+}
+
+.RollSimulator-predictions dl div + div {
+    margin-left: 1.5em;
+}
+
+.RollSimulator-predictions dt,
+.RollSimulator-predictions dd {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9em;
+}
+
+.RollSimulator-predictions dt {
+    color: #666;
+    margin-bottom: 0.3em;
 }
