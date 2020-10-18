@@ -41,7 +41,7 @@ const attackTypes = [
         ]
     },
     {
-        id: 'machine-gun',
+        id: 'panzergrenadier_squad',
         title: 'Panzergrenadiers: Kar98k, MP40',
         softAttack: 2,
         ranges: [
@@ -67,7 +67,7 @@ const attackTypes = [
         ]
     },
     {
-        id: 'machine-gun',
+        id: 'german_mg',
         title: 'Panzergrenadiers: MG 34 / MG 42',
         softAttack: 1,
         supression: 3,
