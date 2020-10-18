@@ -215,22 +215,47 @@ export class DiceBucket {
 
         for (let effect of diceEffects) {
             let uses = 0;
+            let exhausted = false;
 
             if (effect.effect === 'cancel') {
                 const targetDice = bucket.getResults(effect.target);
+
                 for (let triggerDie of bucket.getResults(effect.trigger)) {
-                    const targetDie = targetDice.shift();
-                    if (targetDie) {
-                        bucketTransformed = true;
-                        const context = {effect, triggerDie};
-                        triggerDie.cancel(context);
-                        targetDie.cancel(context);
-                        uses++;
-                        if (effect.limit && uses === effect.limit) {
+
+                    let dieUsed = false;
+                    let amount = effect.amount;
+                    const context = {effect, triggerDie};
+
+                    if (amount === undefined) {
+                        amount = 1;
+                    }
+                    else if (amount === 'all') {
+                        amount = targetDice.length;
+                    }
+
+                    while (amount--) {
+                        const targetDie = targetDice.shift();
+                        if (targetDie) {
+                            dieUsed = true;
+                            bucketTransformed = true;
+                            targetDie.cancel(context);
+                            uses++;
+                            if (effect.limit && uses === effect.limit) {
+                                exhausted = true;
+                                break;
+                            }
+                        }
+                        else {
+                            exhausted = true;
                             break;
                         }
                     }
-                    else {
+
+                    if (dieUsed) {
+                        triggerDie.cancel(context);
+                    }
+
+                    if (exhausted) {
                         break;
                     }
                 }

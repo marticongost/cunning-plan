@@ -69,7 +69,19 @@ export default function AttackSimulator() {
                 },
                 {
                     effect: 'cancel',
-                    trigger: ['movement', 'range', 'cover', 'visibility'],
+                    trigger: ['disordered'],
+                    target: ['critical', 'supression', 'hit'],
+                    amount: 'all'
+                },
+                {
+                    effect: 'cancel',
+                    trigger: [
+                        'movement',
+                        'range',
+                        'cover',
+                        'visibility',
+                        'shock'
+                    ],
                     target: ['critical', 'hit']
                 },
                 {
