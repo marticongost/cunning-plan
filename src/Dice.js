@@ -1,6 +1,7 @@
 import React from "react";
 import { ReactComponent as AddIcon } from './svg/icons/add.svg';
 import { ReactComponent as RemoveIcon } from './svg/icons/remove.svg';
+import Tooltip from './Tooltip';
 import './css/Dice.css';
 
 const digits = '0123456789';
@@ -56,11 +57,22 @@ export default function Dice(props) {
             tabIndex="-1"
             onKeyDown={handleKeyDown}>
             <div className="Dice-type">
-                <type.icon/>
-                <span
-                    className="Dice-title"
-                    dangerouslySetInnerHTML={{__html: type.title.replace(type.shortcut, `<u>${type.shortcut}</u>`)}}>
-                </span>
+                <Tooltip
+                    content={
+                        type.faces.map((face, index) =>
+                            <div
+                                key={index}
+                                className="Dice-faceCount">
+                                {<face.icon/>} x {face.number}
+                            </div>
+                        )
+                    }>
+                    <type.icon/>
+                    <span
+                        className="Dice-title"
+                        dangerouslySetInnerHTML={{__html: type.title.replace(type.shortcut, `<u>${type.shortcut}</u>`)}}>
+                    </span>
+                </Tooltip>
             </div>
             <div className="Dice-controls">
                 <input
