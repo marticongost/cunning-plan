@@ -1,0 +1,44 @@
+
+.Tooltip {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    --tooltip-separation: 0.5em;
+    --tooltip-background: #333;
+}
+
+.Tooltip-frame {
+    z-index: 2;
+    position: absolute;
+    top: calc(100% + var(--tooltip-separation));
+    align-self: center;
+    background: var(--tooltip-background);
+    padding: 0.5em;
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+    border-radius: 0.2em;
+}
+
+.Tooltip:hover .Tooltip-frame {
+    opacity: 1;
+}
+
+.Tooltip-frame:before {
+    content: '';
+    transform: rotate(45deg);
+    background: var(--tooltip-background);
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    top: -0.2em;
+    left: calc(50% - 0.5em);
+    z-index: 1;
+}
+
+.Tooltip-content {
+    position: relative;
+    z-index: 3;
+}
