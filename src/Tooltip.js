@@ -1,5 +1,5 @@
 import React from "react";
-import './css/Tooltip.css';
+import "./css/Tooltip.css";
 
 export default function Tooltip(props) {
     const { content, children } = props;
@@ -7,9 +7,7 @@ export default function Tooltip(props) {
         <div className="Tooltip">
             {children}
             <div className="Tooltip-frame">
-                <div className="Tooltip-content">
-                    {content}
-                </div>
+                <div className="Tooltip-content">{content}</div>
             </div>
         </div>
     );

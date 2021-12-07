@@ -1,4 +1,3 @@
-
 @keyframes Dice-rolling {
     from {
         transform: rotate(0);
@@ -36,50 +35,50 @@
     outline-color: #ddd;
 }
 
-.Dice[data-type='critical'] {
+.Dice[data-type="critical"] {
     --die-color: rgb(202, 10, 10);
 }
 
-.Dice[data-type='supression'] {
+.Dice[data-type="supression"] {
     --die-color: rgb(255 119 9);
 }
 
-.Dice[data-type='armor'] {
+.Dice[data-type="armor"] {
     --die-color: rgb(77, 62, 36);
 }
 
-.Dice[data-type='shock'] {
+.Dice[data-type="shock"] {
     --die-color: rgb(233, 190, 0);
 }
 
-.Dice[data-type='veterancy'] {
+.Dice[data-type="veterancy"] {
     --die-color: rgb(10, 77, 10);
 }
 
-.Dice[data-type='range'],
-.Dice[data-type='cover'],
-.Dice[data-type='visibility'],
-.Dice[data-type='movement'] {
+.Dice[data-type="range"],
+.Dice[data-type="cover"],
+.Dice[data-type="visibility"],
+.Dice[data-type="movement"] {
     --die-color: rgb(26, 26, 167);
 }
 
-.Dice-die[data-state='rolling'] {
+.Dice-die[data-state="rolling"] {
     animation: Dice-rolling linear 0.2s;
 }
 
-.Dice-die[data-state='canceling'] {
+.Dice-die[data-state="canceling"] {
     animation: Dice-canceling linear 0.2s;
 }
 
-.Dice-die[data-state='canceled'] {
+.Dice-die[data-state="canceled"] {
     opacity: 0.3;
 }
 
-.Dice-die[data-state='faceDisappearing'] svg {
+.Dice-die[data-state="faceDisappearing"] svg {
     animation: Dice-faceFade linear 0.2s;
 }
 
-.Dice-die[data-state='faceAppearing'] svg {
+.Dice-die[data-state="faceAppearing"] svg {
     animation: Dice-faceFade linear 0.2s reverse;
 }
 

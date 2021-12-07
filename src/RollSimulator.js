@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { diceTypes } from './dicetypes';
-import Dice from './Dice';
-import { DiceBucket, Die } from './dicebucket';
-import './css/RollSimulator.css';
+import { diceTypes } from "./dicetypes";
+import Dice from "./Dice";
+import { DiceBucket, Die } from "./dicebucket";
+import "./css/RollSimulator.css";
 
 export default function RollSimulator(props) {
-
     const {
         diceGroups,
         Controls,
@@ -13,22 +12,20 @@ export default function RollSimulator(props) {
         dicePresets,
         diceEffects,
         scoringWeights,
-        predictions
+        predictions,
     } = props;
 
-    const [state, setState] = useState(
-        () => {
-            const state = {
-                diceBucket: new DiceBucket(
-                    dicePresets ? dicePresets(initialSettings) : null,
-                    scoringWeights
-                ),
-                settings: initialSettings
-            };
-            state.predictionResults = getPredictionResults(state);
-            return state;
-        }
-    );
+    const [state, setState] = useState(() => {
+        const state = {
+            diceBucket: new DiceBucket(
+                dicePresets ? dicePresets(initialSettings) : null,
+                scoringWeights
+            ),
+            settings: initialSettings,
+        };
+        state.predictionResults = getPredictionResults(state);
+        return state;
+    });
 
     function updateState(changes) {
         const newState = Object.assign({}, state, changes);
@@ -38,7 +35,7 @@ export default function RollSimulator(props) {
 
     function updateSettings(newValues) {
         const newState = {
-            settings: Object.assign({}, state.settings, newValues)
+            settings: Object.assign({}, state.settings, newValues),
         };
         if (dicePresets) {
             const newDiceBucket = state.diceBucket.clone();
@@ -51,11 +48,11 @@ export default function RollSimulator(props) {
     function updateDiceAmounts(diceToSet) {
         const newDiceBucket = state.diceBucket.clone();
         newDiceBucket.setAmounts(diceToSet);
-        updateState({diceBucket: newDiceBucket});
+        updateState({ diceBucket: newDiceBucket });
     }
 
     function updateDiceBucket(diceBucket) {
-        setState(Object.assign({}, state, {diceBucket}));
+        setState(Object.assign({}, state, { diceBucket }));
     }
 
     function getPredictionResults(state) {
@@ -76,15 +73,14 @@ export default function RollSimulator(props) {
                         bruteForcePredictionRoll.getResultCount()
                     );
                     if (diceEffectsForRoll && diceEffectsForRoll.length) {
-                        bruteForcePredictionRoll = (
+                        bruteForcePredictionRoll =
                             bruteForcePredictionRoll.resolveEffects(
                                 diceEffectsForRoll
-                            )
-                            || bruteForcePredictionRoll
-                        );
+                            ) || bruteForcePredictionRoll;
                     }
                 }
-                const results = bruteForcePredictionRoll.getEffectiveResultCount();
+                const results =
+                    bruteForcePredictionRoll.getEffectiveResultCount();
                 for (let i = 0; i < predictions.length; i++) {
                     if (predictions[i].test(results)) {
                         chances[i]++;
@@ -96,14 +92,12 @@ export default function RollSimulator(props) {
     }
 
     function handleRollButtonClick(e) {
-
         // Start the roll animation
         const rollingDiceBucket = state.diceBucket.clone();
         rollingDiceBucket.roll();
         updateDiceBucket(rollingDiceBucket);
 
         function afterRoll() {
-
             // End the roll animation
             const afterRollDiceBucket = rollingDiceBucket.clone();
             afterRollDiceBucket.setDiceState(Die.RESTING);
@@ -117,14 +111,17 @@ export default function RollSimulator(props) {
                     afterRollDiceBucket.getResultCount()
                 );
                 if (diceEffectsForRoll && diceEffectsForRoll.length) {
-                    let effectsDiceBucket = afterRollDiceBucket.resolveEffects(
-                        diceEffectsForRoll
-                    );
+                    let effectsDiceBucket =
+                        afterRollDiceBucket.resolveEffects(diceEffectsForRoll);
                     if (effectsDiceBucket) {
-                        console.group('Dice effects');
+                        console.group("Dice effects");
                         console.log(afterRollDiceBucket.getResultCount());
                         for (let die of effectsDiceBucket) {
-                            console.log(die.result, die.effectiveResult, die.state);
+                            console.log(
+                                die.result,
+                                die.effectiveResult,
+                                die.state
+                            );
                         }
                         console.groupEnd();
                         updateDiceBucket(effectsDiceBucket);
@@ -137,9 +134,8 @@ export default function RollSimulator(props) {
                                     if (die.state.replacement) {
                                         die.result = die.state.replacement;
                                     }
-                                    changesRemain = (
-                                        changesRemain || die.state.nextState
-                                    );
+                                    changesRemain =
+                                        changesRemain || die.state.nextState;
                                 }
                             }
                             updateDiceBucket(effectsDiceBucket);
@@ -164,35 +160,36 @@ export default function RollSimulator(props) {
                     key={diceTypeId}
                     type={diceType}
                     dice={state.diceBucket.getDiceOfType(diceTypeId)}
-                    onAmountChanged={(amount) => updateDiceAmounts({[diceTypeId]: amount})}/>
+                    onAmountChanged={(amount) =>
+                        updateDiceAmounts({ [diceTypeId]: amount })
+                    }
+                />
             );
         }
         return elements;
     }
 
-    const controls = (
-        Controls ?
-            <Controls
-                settings={state.settings}
-                onSettingsChanged={updateSettings}/>
-            : null
-    );
+    const controls = Controls ? (
+        <Controls
+            settings={state.settings}
+            onSettingsChanged={updateSettings}
+        />
+    ) : null;
 
-    const predictionsSection = (
-        predictions ?
-            <div className="RollSimulator-predictions">
-                <dl>
-                    {predictions.map(
-                        (prediction, index) =>
-                            <div key={index}>
-                                <dt>{prediction.title}</dt>
-                                <dd>{Math.round(state.predictionResults[index] / 10)} %</dd>
-                            </div>
-                    )}
-                </dl>
-            </div>
-            : null
-    );
+    const predictionsSection = predictions ? (
+        <div className="RollSimulator-predictions">
+            <dl>
+                {predictions.map((prediction, index) => (
+                    <div key={index}>
+                        <dt>{prediction.title}</dt>
+                        <dd>
+                            {Math.round(state.predictionResults[index] / 10)} %
+                        </dd>
+                    </div>
+                ))}
+            </dl>
+        </div>
+    ) : null;
 
     return (
         <div className="RollSimulator">
@@ -201,21 +198,27 @@ export default function RollSimulator(props) {
                 <button
                     className="RollSimulator-rollButton"
                     type="button"
-                    onClick={handleRollButtonClick}>
+                    onClick={handleRollButtonClick}
+                >
                     Tirar
                 </button>
                 {predictionsSection}
             </div>
             <div className="RollSimulator-diceGroups">
-                {diceGroups.map(group =>
+                {diceGroups.map((group) => (
                     <section
                         key={group.id}
                         className="RollSimulator-diceGroup"
-                        data-group={group.id}>
-                        {group.title ? <h1 className="RollSimulator-diceGroupHeading">{group.title}</h1> : null}
+                        data-group={group.id}
+                    >
+                        {group.title ? (
+                            <h1 className="RollSimulator-diceGroupHeading">
+                                {group.title}
+                            </h1>
+                        ) : null}
                         {diceList(group.diceTypes)}
                     </section>
-                )}
+                ))}
             </div>
         </div>
     );

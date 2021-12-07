@@ -1,38 +1,42 @@
-import React, { useState } from 'react';
-import './css/Tabs.css';
+import React, { useState } from "react";
+import "./css/Tabs.css";
 
 export function Tabs(props) {
-
     const [visibleTab, setVisibleTab] = useState(
-        props.visibleTab
-        || (props.children && props.children[0] && props.children[0].props.name)
+        props.visibleTab ||
+            (props.children &&
+                props.children[0] &&
+                props.children[0].props.name)
     );
 
     if (!props.children || !props.children.length) {
         return null;
     }
 
-    const getTabState = (
-        (tab) => tab.props.name === visibleTab ? 'visible' : 'hidden'
-    );
+    const getTabState = (tab) =>
+        tab.props.name === visibleTab ? "visible" : "hidden";
 
     return (
         <div className="Tabs">
             <ul className="Tabs-strip">
-                {props.children.map((tab, index) =>
+                {props.children.map((tab, index) => (
                     <li key={tab.props.name}>
                         <TabButton
                             index={index}
                             name={tab.props.name}
                             state={getTabState(tab)}
                             title={tab.props.title}
-                            setVisibleTab={setVisibleTab}/>
+                            setVisibleTab={setVisibleTab}
+                        />
                     </li>
-                )}
+                ))}
             </ul>
             <div className="Tabs-container">
-                {props.children.map(tab =>
-                    React.cloneElement(tab, {key: tab.props.name, state: getTabState(tab)})
+                {props.children.map((tab) =>
+                    React.cloneElement(tab, {
+                        key: tab.props.name,
+                        state: getTabState(tab),
+                    })
                 )}
             </div>
         </div>
@@ -40,7 +44,6 @@ export function Tabs(props) {
 }
 
 export function TabButton(props) {
-
     function handleClick(e) {
         props.setVisibleTab(props.name);
     }
@@ -50,7 +53,8 @@ export function TabButton(props) {
             className="TabButton"
             type="button"
             data-tab-state={props.state}
-            onClick={handleClick}>
+            onClick={handleClick}
+        >
             {props.title}
         </button>
     );

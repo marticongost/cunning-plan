@@ -1,4 +1,3 @@
-
 .Tooltip {
     display: flex;
     flex-direction: column;
@@ -27,7 +26,7 @@
 }
 
 .Tooltip-frame:before {
-    content: '';
+    content: "";
     transform: rotate(45deg);
     background: var(--tooltip-background);
     position: absolute;

@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
-import { Tabs, Tab } from './Tabs';
-import AttackSimulator from './AttackSimulator';
-import './css/App.css';
-import ShockSimulator from './ShockSimulator';
+import React, { useEffect } from "react";
+import { Tabs, Tab } from "./Tabs";
+import AttackSimulator from "./AttackSimulator";
+import "./css/App.css";
+import ShockSimulator from "./ShockSimulator";
 
 function App() {
-
     useEffect(() => {
         const handler = (e) => {
-            const element = document.querySelector(`[data-shortcut="${e.key}"]`);
+            const element = document.querySelector(
+                `[data-shortcut="${e.key}"]`
+            );
             if (element) {
                 element.focus();
             }
-        }
-        document.addEventListener('keydown', handler);
-        return () => document.removeEventListener('keydown', handler);
+        };
+        document.addEventListener("keydown", handler);
+        return () => document.removeEventListener("keydown", handler);
     }, []);
 
     return (

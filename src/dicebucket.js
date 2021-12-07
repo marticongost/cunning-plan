@@ -1,8 +1,7 @@
-import { diceResults, diceTypes } from './dicetypes';
-import { permutations, kCombinations, cartesianProduct } from './combinations';
+import { diceResults, diceTypes } from "./dicetypes";
+import { permutations, kCombinations, cartesianProduct } from "./combinations";
 
 export class DiceBucket {
-
     constructor(diceToSet = null, scoringWeights = null) {
         this.dice = {};
         this.scoringWeights = scoringWeights || {};
@@ -14,8 +13,8 @@ export class DiceBucket {
     clone() {
         const clone = new this.constructor(null, this.scoringWeights);
         for (let diceTypeId in this.dice) {
-            clone.dice[diceTypeId] = (
-                this.dice[diceTypeId].map(die => die.clone())
+            clone.dice[diceTypeId] = this.dice[diceTypeId].map((die) =>
+                die.clone()
             );
         }
         return clone;
@@ -23,7 +22,7 @@ export class DiceBucket {
 
     *[Symbol.iterator]() {
         for (let diceTypeId in this.dice) {
-            yield *this.dice[diceTypeId];
+            yield* this.dice[diceTypeId];
         }
     }
 
@@ -34,7 +33,7 @@ export class DiceBucket {
     }
 
     getDiceOfType(diceType) {
-        if (typeof(diceType) != 'string') {
+        if (typeof diceType != "string") {
             diceType = diceType.id;
         }
         if (this.dice[diceType]) {
@@ -50,7 +49,7 @@ export class DiceBucket {
             die.roll();
         }
         localStorage.setItem(
-            'cunningplan.lastRolls',
+            "cunningplan.lastRolls",
             JSON.stringify(window.cunningplan.lastRolls)
         );
     }
@@ -77,7 +76,6 @@ export class DiceBucket {
     }
 
     getScore() {
-
         let score = 0;
 
         for (let die of this) {
@@ -105,8 +103,7 @@ export class DiceBucket {
     }
 
     setAmount(diceType, amount) {
-
-        if (typeof(diceType) == 'string') {
+        if (typeof diceType == "string") {
             diceType = diceTypes[diceType];
         }
 
@@ -123,8 +120,7 @@ export class DiceBucket {
             while (amount > dice.length) {
                 dice.push(new Die(diceType));
             }
-        }
-        else if (amount < dice.length) {
+        } else if (amount < dice.length) {
             while (amount < dice.length) {
                 dice.pop();
             }
@@ -132,14 +128,12 @@ export class DiceBucket {
     }
 
     getResults(type) {
-
         const results = [];
         let resultIds;
 
-        if (typeof(type) == 'string') {
-            resultIds = [type]
-        }
-        else {
+        if (typeof type == "string") {
+            resultIds = [type];
+        } else {
             resultIds = type;
         }
 
@@ -156,23 +150,18 @@ export class DiceBucket {
     }
 
     resolveEffects(diceEffects) {
-
         // If there are 1+ choice effects, try out all of their possible
         // combinations and apply the one with the best outcome
         const choiceEffects = diceEffects.filter(
-            effect => (
-                effect.effect === 'choices'
-                && effect.limit !== 0
-            )
+            (effect) => effect.effect === "choices" && effect.limit !== 0
         );
 
         if (choiceEffects.length) {
             let bestScore = null;
             let bucketWithBestScore = null;
-            const allEffectPermutations = []
+            const allEffectPermutations = [];
 
             for (let effect of choiceEffects) {
-
                 for (let choice of effect.choices) {
                     choice.limit = 1;
                 }
@@ -190,10 +179,9 @@ export class DiceBucket {
             for (let choices of cartesianProduct(allEffectPermutations)) {
                 const effectsCombination = [];
                 for (let effect of diceEffects) {
-                    if (effect.effect === 'choices') {
+                    if (effect.effect === "choices") {
                         effectsCombination.push(...choices.shift());
-                    }
-                    else {
+                    } else {
                         effectsCombination.push(effect);
                     }
                 }
@@ -217,19 +205,17 @@ export class DiceBucket {
             let uses = 0;
             let exhausted = false;
 
-            if (effect.effect === 'cancel') {
+            if (effect.effect === "cancel") {
                 const targetDice = bucket.getResults(effect.target);
 
                 for (let triggerDie of bucket.getResults(effect.trigger)) {
-
                     let dieUsed = false;
                     let amount = effect.amount;
-                    const context = {effect, triggerDie};
+                    const context = { effect, triggerDie };
 
                     if (amount === undefined) {
                         amount = 1;
-                    }
-                    else if (amount === 'all') {
+                    } else if (amount === "all") {
                         amount = targetDice.length;
                     }
 
@@ -244,8 +230,7 @@ export class DiceBucket {
                                 exhausted = true;
                                 break;
                             }
-                        }
-                        else {
+                        } else {
                             exhausted = true;
                             break;
                         }
@@ -259,33 +244,30 @@ export class DiceBucket {
                         break;
                     }
                 }
-            }
-            else if (effect.effect === 'treatAs') {
+            } else if (effect.effect === "treatAs") {
                 for (let die of bucket.getResults(effect.trigger)) {
                     bucketTransformed = true;
-                    const context = {effect, triggerDie: this};
+                    const context = { effect, triggerDie: this };
                     die.replace(effect.replacement, context);
                     uses++;
                     if (effect.limit && uses === effect.limit) {
                         break;
                     }
                 }
-            }
-            else if (effect.effect === 'transform') {
+            } else if (effect.effect === "transform") {
                 const targetDice = bucket.getResults(effect.target);
                 for (let triggerDie of bucket.getResults(effect.trigger)) {
                     const targetDie = targetDice.shift();
                     if (targetDie) {
                         bucketTransformed = true;
-                        const context = {effect, triggerDie};
+                        const context = { effect, triggerDie };
                         triggerDie.cancel(context);
                         targetDie.replace(effect.replacement, context);
                         uses++;
                         if (effect.limit && uses === effect.limit) {
                             break;
                         }
-                    }
-                    else {
+                    } else {
                         break;
                     }
                 }
@@ -297,7 +279,6 @@ export class DiceBucket {
 }
 
 export class Die {
-
     constructor(diceType, result = null, state = null) {
         this.diceType = diceType;
         this.result = result === null ? diceType.faces[0] : result;
@@ -305,23 +286,17 @@ export class Die {
     }
 
     clone() {
-        return new this.constructor(
-            this.diceType,
-            this.result,
-            this.state
-        );
+        return new this.constructor(this.diceType, this.result, this.state);
     }
 
     get effectiveResult() {
-
         let result = this.result;
         let state = this.state;
 
         do {
-            if (state.id === 'canceling' || state.id === 'canceled') {
-                result = '';
-            }
-            else if (state.replacement) {
+            if (state.id === "canceling" || state.id === "canceled") {
+                result = "";
+            } else if (state.replacement) {
                 result = state.replacement;
             }
             state = state.nextState;
@@ -333,8 +308,7 @@ export class Die {
     pushState(state) {
         if (this.state === Die.RESTING || this.state === Die.ROLLING) {
             this.state = state;
-        }
-        else {
+        } else {
             this.getFinalState().nextState = state;
         }
     }
@@ -349,23 +323,23 @@ export class Die {
 
     cancel(context) {
         this.pushState({
-            id: 'canceling',
+            id: "canceling",
             ...context,
             nextState: {
-                id: 'canceled',
-                ...context
-            }
+                id: "canceled",
+                ...context,
+            },
         });
     }
 
     replace(replacement, context) {
         this.pushState({
-            id: 'faceDisappearing',
+            id: "faceDisappearing",
             ...context,
             nextState: {
-                id: 'faceAppearing',
+                id: "faceAppearing",
                 replacement: diceResults[replacement],
-                ...context
+                ...context,
             },
         });
     }
@@ -376,11 +350,9 @@ export class Die {
         // Roll the die, see if the rolled score is enough for any of its faces
         let value;
         if (window.cunningplan.fixedRolls) {
-            value = (
-                window.cunningplan.fixedRolls[window.cunningplan.currentRoll++]
-            );
-        }
-        else {
+            value =
+                window.cunningplan.fixedRolls[window.cunningplan.currentRoll++];
+        } else {
             value = Math.floor(Math.random() * 6) + 1;
         }
         window.cunningplan.lastRolls.push(value);
@@ -394,12 +366,12 @@ export class Die {
         }
 
         // Otherwise default to a blank result
-        this.result = '';
+        this.result = "";
     }
 }
 
-Die.RESTING = Object.freeze({id: 'resting'});
-Die.ROLLING = Object.freeze({id: 'rolling'});
+Die.RESTING = Object.freeze({ id: "resting" });
+Die.ROLLING = Object.freeze({ id: "rolling" });
 
 // Fixing roll results, for debugging. Using the browser console, obtain the
 // results of the last roll by checking the value of cunningplan.lastRolls; fix
@@ -409,12 +381,12 @@ if (!window.cunningplan) {
     window.cunningplan = {};
     Object.assign(window.cunningplan, {
         lastRolls: JSON.parse(
-            localStorage.getItem('cunningplan.lastRolls') || '[]'
+            localStorage.getItem("cunningplan.lastRolls") || "[]"
         ),
         fixedRolls: null,
         currentRoll: 0,
         fixRolls: function () {
             this.fixedRolls = this.lastRolls;
-        }
+        },
     });
 }
