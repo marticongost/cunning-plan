@@ -153,7 +153,10 @@ export class DiceBucket {
         // If there are 1+ choice effects, try out all of their possible
         // combinations and apply the one with the best outcome
         const choiceEffects = diceEffects.filter(
-            (effect) => effect.effect === "choices" && effect.limit !== 0
+            (effect) =>
+                effect.effect === "choices" &&
+                effect.limit !== 0 &&
+                effect.choices.length
         );
 
         if (choiceEffects.length) {
