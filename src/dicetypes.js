@@ -20,12 +20,17 @@ const diceTypes = {
             {
                 id: "critical",
                 icon: CriticalIcon,
-                number: 2,
+                number: 1,
             },
             {
                 id: "hit",
                 number: 1,
                 icon: HitIcon,
+            },
+            {
+                id: "supression",
+                icon: SupressionIcon,
+                number: 1,
             },
             {
                 id: "special",
@@ -42,12 +47,12 @@ const diceTypes = {
             {
                 id: "supression",
                 icon: SupressionIcon,
-                number: 1,
+                number: 3,
             },
             {
                 id: "hit",
                 icon: HitIcon,
-                number: 2,
+                number: 1,
             },
             {
                 id: "special",

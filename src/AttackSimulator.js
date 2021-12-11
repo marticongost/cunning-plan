@@ -2,6 +2,8 @@ import React from "react";
 import attackTypes from "./attacktypes";
 import RollSimulator from "./RollSimulator";
 
+const INCOMING_FIRE_RESULTS = ["critical", "hit", "supression"];
+
 export default function AttackSimulator() {
     return (
         <RollSimulator
@@ -63,7 +65,7 @@ export default function AttackSimulator() {
                 {
                     effect: "cancel",
                     trigger: ["disordered"],
-                    target: ["critical", "supression", "hit"],
+                    target: INCOMING_FIRE_RESULTS,
                     amount: "all",
                 },
                 {
@@ -75,30 +77,52 @@ export default function AttackSimulator() {
                         "visibility",
                         "shock",
                     ],
-                    target: ["critical", "hit"],
+                    target: INCOMING_FIRE_RESULTS,
                 },
                 {
                     effect: "cancel",
                     trigger: ["veterancy"],
-                    target: ["hit"],
+                    target: INCOMING_FIRE_RESULTS,
                 },
             ]}
             diceScore={(results) =>
                 (results.critical || 0) * 100000 +
-                (results.supression || 0) * 1000 +
-                (results.hit || 0)
+                (results.hit || 0) * 1000 +
+                (results.supression || 0)
             }
             predictions={[
                 {
-                    title: "Baixa",
-                    test: (results) => (results.critical || 0) > 0,
+                    title: "Baixa 3",
+                    test: (results) => results.critical || results.hit >= 3,
                 },
                 {
-                    title: "Xoc",
+                    title: "Baixa 2",
+                    test: (results) => !results.critical && results.hit === 2,
+                },
+                {
+                    title: "Baixa 1",
+                    test: (results) => !results.critical && results.hit === 1,
+                },
+                {
+                    title: "Supressió 3",
                     test: (results) =>
-                        (results.critical || 0) < 1 &&
-                        ((results.hit || 0) > 0 ||
-                            (results.supression || 0) > 0),
+                        !results.critical &&
+                        !(results.hit >= 3) &&
+                        (results.supression || 0) + (results.hit || 0) >= 3,
+                },
+                {
+                    title: "Supressió 2",
+                    test: (results) =>
+                        !results.critical &&
+                        !(results.hit >= 3) &&
+                        (results.supression || 0) + (results.hit || 0) === 2,
+                },
+                {
+                    title: "Supressió 1",
+                    test: (results) =>
+                        !results.critical &&
+                        !(results.hit >= 3) &&
+                        (results.supression || 0) + (results.hit || 0) === 1,
                 },
             ]}
         />
