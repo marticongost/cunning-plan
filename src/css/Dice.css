@@ -32,15 +32,15 @@
     align-items: center;
     padding: 1em;
     padding-left: 0.5em;
-    outline-color: #ddd;
+    outline-color: var(--subtle-line-color);
 }
 
 .Dice[data-type="critical"] {
-    --die-color: rgb(202, 10, 10);
+    --die-color: rgb(162, 29, 29);
 }
 
 .Dice[data-type="supression"] {
-    --die-color: rgb(255 119 9);
+    --die-color: rgb(218, 142, 19);
 }
 
 .Dice[data-type="armor"] {
@@ -48,18 +48,18 @@
 }
 
 .Dice[data-type="shock"] {
-    --die-color: rgb(233, 190, 0);
+    --die-color: rgb(88, 48, 74);
 }
 
 .Dice[data-type="veterancy"] {
-    --die-color: rgb(10, 77, 10);
+    --die-color: rgb(35, 73, 35);
 }
 
 .Dice[data-type="range"],
 .Dice[data-type="cover"],
 .Dice[data-type="visibility"],
 .Dice[data-type="movement"] {
-    --die-color: rgb(26, 26, 167);
+    --die-color: rgb(21, 21, 63);
 }
 
 .Dice-die[data-state="rolling"] {
@@ -85,6 +85,7 @@
 .Dice-type {
     width: 4em;
     margin-right: 1em;
+    position: relative;
 }
 
 .Dice-type .Tooltip {
@@ -96,6 +97,8 @@
 .Dice-type svg {
     width: auto;
     height: 2.4em;
+    filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.2));
+    z-index: 0;
 }
 
 .Dice-type svg,
@@ -153,11 +156,11 @@
 .Dice-controls button svg {
     height: 2em;
     width: auto;
-    fill: #666;
+    fill: var(--secondary-color);
 }
 
 .Dice-controls button:hover svg {
-    fill: #333;
+    fill: var(--main-color);
 }
 
 .Dice-dice {

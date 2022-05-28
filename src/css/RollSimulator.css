@@ -24,15 +24,15 @@
 .RollSimulator-diceGroupHeading {
     margin-top: 0;
     padding-bottom: 0.3em;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid var(--subtle-line-color);
     margin-bottom: 0.5em;
     font-size: 1.2em;
     font-weight: 500;
-    color: #333;
+    color: var(--main-color);
 }
 
 .RollSimulator-rollButton {
-    background-color: #333;
+    background-color: var(--secondary-color);
     color: white;
     border: none;
     border-radius: 0.3em;
@@ -42,7 +42,7 @@
 }
 
 .RollSimulator-rollButton:hover {
-    background-color: black;
+    background-color: var(--main-color);
 }
 
 .RollSimulator-predictions {

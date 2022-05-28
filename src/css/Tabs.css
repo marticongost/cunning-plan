@@ -27,12 +27,12 @@
 }
 
 .TabButton[data-tab-state="hidden"] {
-    color: #999;
+    color: var(--subtle-text-color);
 }
 
 .TabButton[data-tab-state="visible"] {
-    color: #333;
-    border-bottom-color: #ccc;
+    color: var(--main-color);
+    border-bottom-color: var(--bold-line-color);
 }
 
 .Tab[data-tab-state="hidden"] {

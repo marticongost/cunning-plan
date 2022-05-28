@@ -1,5 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap");
+
 * {
     box-sizing: border-box;
+}
+
+html {
+    background-color: #c7c6ae;
+    --main-color: #3d360b;
+    --secondary-color: #8d8554;
+    --subtle-text-color: #7c7b5c;
+    --bold-line-color: #8d8c6a;
+    --subtle-line-color: #afad8d;
 }
 
 body {

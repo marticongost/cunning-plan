@@ -6,6 +6,9 @@
     margin-top: 0;
     margin-bottom: 1em;
     font-size: 1.6em;
+    font-weight: 900;
+    font-family: Montserrat;
+    color: var(--main-color);
 }
 
 .Tabs-strip {
