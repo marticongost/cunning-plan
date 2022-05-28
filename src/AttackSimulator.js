@@ -117,7 +117,7 @@ export default function AttackSimulator() {
                     test: (results) =>
                         !results.critical &&
                         !(results.hit >= 3) &&
-                        (results.supression || 0) + (results.hit || 0) >= 3,
+                        (results.supression || 0) >= 3,
                 },
                 {
                     title: "Supressió 2",
@@ -126,7 +126,7 @@ export default function AttackSimulator() {
                     test: (results) =>
                         !results.critical &&
                         !(results.hit >= 3) &&
-                        (results.supression || 0) + (results.hit || 0) === 2,
+                        (results.supression || 0) === 2,
                 },
                 {
                     title: "Supressió 1",
@@ -135,7 +135,7 @@ export default function AttackSimulator() {
                     test: (results) =>
                         !results.critical &&
                         !(results.hit >= 3) &&
-                        (results.supression || 0) + (results.hit || 0) === 1,
+                        (results.supression || 0) === 1,
                 },
             ]}
         />
