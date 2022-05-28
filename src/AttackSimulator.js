@@ -4,6 +4,8 @@ import RollSimulator from "./RollSimulator";
 import { ReactComponent as CriticalIcon } from "./svg/dice/critical.svg";
 import { ReactComponent as HitIcon } from "./svg/dice/hit.svg";
 import { ReactComponent as SupressionIcon } from "./svg/dice/supression.svg";
+import { ReactComponent as SpecialIcon } from "./svg/dice/special.svg";
+import { diceTypes } from "./dicetypes";
 
 const INCOMING_FIRE_RESULTS = ["critical", "hit", "supression"];
 
@@ -11,6 +13,7 @@ export default function AttackSimulator() {
     return (
         <RollSimulator
             Controls={AttackSimulatorControls}
+            RollInformation={AvailableSpecials}
             initialSettings={{
                 attackType: attackTypes[0],
                 range: 0,
@@ -49,17 +52,12 @@ export default function AttackSimulator() {
                     effect: "choices",
                     limit: results.special || 0,
                     choices: (settings.attackType.special || [])
-                        .filter(
-                            (special) =>
-                                !special.requires ||
-                                ((special.requires.range === undefined ||
-                                    special.requires.range.includes(
-                                        settings.range
-                                    )) &&
-                                    (special.requires.movement === undefined ||
-                                        special.requires.movement.includes(
-                                            diceAmounts.movement
-                                        )))
+                        .filter((special) =>
+                            satisfiesSpecialRequirements(
+                                special,
+                                diceAmounts,
+                                settings
+                            )
                         )
                         .map((special) => {
                             return { trigger: ["special"], ...special };
@@ -144,6 +142,25 @@ export default function AttackSimulator() {
     );
 }
 
+function satisfiesSpecialRequirements(special, diceAmounts, settings) {
+    if (special.requires) {
+        const context = {
+            movement: diceAmounts.movement,
+            cover: diceAmounts.cover,
+            range: settings.range,
+        };
+        for (let [key, acceptableValues] of Object.entries(special.requires)) {
+            if (
+                acceptableValues &&
+                !acceptableValues.includes(context[key] || 0)
+            ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function AttackSimulatorControls(props) {
     const { settings, onSettingsChanged } = props;
     const attackType = settings.attackType;
@@ -196,4 +213,134 @@ function AttackSimulatorControls(props) {
             </select>
         </>
     );
+}
+
+function AvailableSpecials(props) {
+    const attackType = props.settings && props.settings.attackType;
+    const diceAmounts = props.diceBucket.getAmounts();
+    if (!attackType || !attackType.special || !attackType.special.length) {
+        return null;
+    }
+    return (
+        <div className="AvailableSpecials">
+            {attackType.special.map((special, index) => (
+                <SpecialAttack
+                    key={index}
+                    special={special}
+                    applicable={satisfiesSpecialRequirements(
+                        special,
+                        diceAmounts,
+                        props.settings
+                    )}
+                />
+            ))}
+        </div>
+    );
+}
+
+function SpecialAttack(props) {
+    return (
+        <div
+            className="SpecialAttack"
+            data-applicable={props.applicable ? "true" : "false"}
+        >
+            <div className="SpecialAttack-title">
+                <SpecialIcon />
+                <span>{props.special.title}:</span>
+            </div>
+            <div className="SpecialAttack-effect">
+                {describeSpecialAttack(props.special)}
+            </div>
+        </div>
+    );
+}
+
+function describeSpecialAttack(special) {
+    var description = [];
+
+    function renderDieFaces(faceIds) {
+        const targetFaceIds = typeof faceIds == "string" ? [faceIds] : faceIds;
+        description.push(
+            ...targetFaceIds.map((faceId, index) => {
+                const Icon = getIconForFaceId(faceId);
+                const content = [];
+                if (index) {
+                    content.push(" / ");
+                }
+                content.push(<Icon key={index} />);
+                return content;
+            })
+        );
+    }
+
+    function getIconForFaceId(faceId) {
+        for (let diceType of Object.values(diceTypes)) {
+            for (let face of diceType.faces) {
+                if (face.id === faceId) {
+                    return face.icon;
+                }
+            }
+        }
+        return null;
+    }
+
+    function describeRange(range) {
+        if (range === 0) {
+            return "mínima";
+        } else if (range === 1) {
+            return "mitja";
+        } else if (range === 2) {
+            return "llarga";
+        } else if (range === 3) {
+            return "extrema";
+        }
+        return range;
+    }
+
+    if (special.effect === "cancel") {
+        description.push("Cancel·la ");
+        if (special.limit) {
+            description.push(`fins a ${special.limit} `);
+        }
+        renderDieFaces(special.target);
+    } else if (special.effect === "treatAs") {
+        description.push("Converteix en ");
+        renderDieFaces(special.replacement);
+    }
+
+    if (special.requires) {
+        if (special.requires.range !== undefined) {
+            description.push(
+                ` a distància ${special.requires.range
+                    .map(describeRange)
+                    .join(", ")}`
+            );
+        }
+        if (special.requires.cover !== undefined) {
+            if (
+                special.requires.cover.length === 1 &&
+                special.requires.cover[0] === 0
+            ) {
+                description.push(" contra unitats sense cobertura");
+            } else {
+                description.push(
+                    ` contra cobertura ${special.requires.cover.join(", ")}`
+                );
+            }
+        }
+        if (special.requires.movement !== undefined) {
+            if (
+                special.requires.movement.length === 1 &&
+                special.requires.movement[0] === 0
+            ) {
+                description.push(" si la unitat no ha mogut");
+            } else {
+                description.push(
+                    ` amb moviment ${special.requires.movement.join(", ")}`
+                );
+            }
+        }
+    }
+
+    return description;
 }

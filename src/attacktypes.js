@@ -7,18 +7,18 @@ const attackTypes = [
     },
     {
         id: "usa_mechanized_infantry_squad",
-        title:
-            "Infanteria mecanitzada americana " +
-            "(M1 Garand, M3 Grease Gun, BAR)",
+        title: "Infanteria mecanitzada americana",
         softAttack: 2,
         supression: 1,
         ranges: [{ max: 12 }, { max: 24, penalty: 1 }, { max: 30, penalty: 2 }],
         special: [
             {
+                title: "M1 Garand",
                 effect: "cancel",
                 target: ["movement"],
             },
             {
+                title: "M3 Grease Gun",
                 effect: "treatAs",
                 replacement: "critical",
                 requires: {
@@ -26,6 +26,7 @@ const attackTypes = [
                 },
             },
             {
+                title: "BAR",
                 effect: "treatAs",
                 replacement: "hit",
                 requires: {
@@ -36,11 +37,12 @@ const attackTypes = [
     },
     {
         id: "panzergrenadier_squad",
-        title: "Panzergrenadiers: Kar98k, MP40",
+        title: "Panzergrenadiers",
         softAttack: 2,
         ranges: [{ max: 15 }, { max: 30, penalty: 1 }, { max: 45, penalty: 2 }],
         special: [
             {
+                title: "Kar98k",
                 effect: "cancel",
                 target: ["range"],
                 requires: {
@@ -48,6 +50,7 @@ const attackTypes = [
                 },
             },
             {
+                title: "MP40",
                 effect: "treatAs",
                 replacement: "critical",
                 requires: {
@@ -58,12 +61,13 @@ const attackTypes = [
     },
     {
         id: "german_mg",
-        title: "Panzergrenadiers: MG 34 / MG 42",
+        title: "Panzergrenadiers, metralladora",
         softAttack: 1,
         supression: 3,
         ranges: [{ max: 15 }, { max: 30, penalty: 1 }, { max: 45, penalty: 2 }],
         special: [
             {
+                title: "MG34 / MG42",
                 effect: "treatAs",
                 replacement: "critical",
                 requires: {
@@ -80,7 +84,10 @@ const attackTypes = [
         ranges: [{ max: 12 }],
         special: [
             {
-                cancel: { type: ["cover", "veterancy"], max: 2 },
+                title: "Llançaflames",
+                effect: "cancel",
+                target: ["cover", "veterancy"],
+                limit: 2,
             },
         ],
     },

@@ -1,6 +1,6 @@
 export function times(number, callback) {
     var results = [];
-    while (number--) results.push(callback());
+    while (number--) results.push(callback(number));
     return results;
 }
 

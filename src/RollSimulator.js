@@ -9,6 +9,7 @@ export default function RollSimulator(props) {
     const {
         diceGroups,
         Controls,
+        RollInformation,
         initialSettings,
         dicePresets,
         diceEffects,
@@ -197,8 +198,8 @@ export default function RollSimulator(props) {
                     return (
                         <div key={index}>
                             <dt title={prediction.title}>
-                                {times(prediction.amount, () => (
-                                    <prediction.icon />
+                                {times(prediction.amount, (i) => (
+                                    <prediction.icon key={i} />
                                 ))}
                             </dt>
                             <dd>{prediction.probability} %</dd>
@@ -207,6 +208,13 @@ export default function RollSimulator(props) {
                 })}
             </dl>
         </div>
+    ) : null;
+
+    const rollInformationSection = RollInformation ? (
+        <RollInformation
+            diceBucket={state.diceBucket}
+            settings={state.settings}
+        />
     ) : null;
 
     return (
@@ -222,6 +230,7 @@ export default function RollSimulator(props) {
                 </button>
                 {predictionsSection}
             </div>
+            {rollInformationSection}
             <div className="RollSimulator-diceGroups">
                 {diceGroups.map((group) => (
                     <section

@@ -82,3 +82,55 @@
     height: auto;
     fill: var(--bold-line-color) !important;
 }
+
+.AvailableSpecials {
+    display: table;
+    font-size: 0.9em;
+}
+
+.SpecialAttack {
+    margin-top: 0.5rem;
+    display: table-row;
+}
+
+.SpecialAttack[data-applicable="false"] {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.SpecialAttack-title {
+    padding-right: 1rem;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.SpecialAttack-title,
+.SpecialAttack-effect {
+    display: table-cell;
+    padding-top: 0.5rem;
+}
+
+.SpecialAttack-title svg {
+    width: 1rem;
+    height: auto;
+    margin-right: 0.5rem;
+}
+
+.SpecialAttack-title svg,
+.SpecialAttack-title svg * {
+    fill: var(--bold-line-color) !important;
+}
+
+.SpecialAttack-effect svg {
+    width: 1.2rem;
+    height: auto;
+    padding: 0.2rem;
+    background-color: var(--main-color);
+    border-radius: 0.3em;
+    vertical-align: middle;
+}
+
+.SpecialAttack-effect svg,
+.SpecialAttack-effect svg * {
+    fill: white !important;
+}
