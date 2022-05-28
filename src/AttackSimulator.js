@@ -1,6 +1,9 @@
 import React from "react";
 import attackTypes from "./attacktypes";
 import RollSimulator from "./RollSimulator";
+import { ReactComponent as CriticalIcon } from "./svg/dice/critical.svg";
+import { ReactComponent as HitIcon } from "./svg/dice/hit.svg";
+import { ReactComponent as SupressionIcon } from "./svg/dice/supression.svg";
 
 const INCOMING_FIRE_RESULTS = ["critical", "hit", "supression"];
 
@@ -93,18 +96,26 @@ export default function AttackSimulator() {
             predictions={[
                 {
                     title: "Baixa 3",
+                    icon: CriticalIcon,
+                    amount: 1,
                     test: (results) => results.critical || results.hit >= 3,
                 },
                 {
                     title: "Baixa 2",
+                    icon: HitIcon,
+                    amount: 2,
                     test: (results) => !results.critical && results.hit === 2,
                 },
                 {
                     title: "Baixa 1",
+                    icon: HitIcon,
+                    amount: 1,
                     test: (results) => !results.critical && results.hit === 1,
                 },
                 {
                     title: "Supressió 3",
+                    icon: SupressionIcon,
+                    amount: 3,
                     test: (results) =>
                         !results.critical &&
                         !(results.hit >= 3) &&
@@ -112,6 +123,8 @@ export default function AttackSimulator() {
                 },
                 {
                     title: "Supressió 2",
+                    icon: SupressionIcon,
+                    amount: 2,
                     test: (results) =>
                         !results.critical &&
                         !(results.hit >= 3) &&
@@ -119,6 +132,8 @@ export default function AttackSimulator() {
                 },
                 {
                     title: "Supressió 1",
+                    icon: SupressionIcon,
+                    amount: 1,
                     test: (results) =>
                         !results.critical &&
                         !(results.hit >= 3) &&

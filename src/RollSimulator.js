@@ -3,6 +3,7 @@ import { diceTypes } from "./dicetypes";
 import Dice from "./Dice";
 import { DiceBucket, Die } from "./dicebucket";
 import "./css/RollSimulator.css";
+import { times, sorted } from "./utils";
 
 export default function RollSimulator(props) {
     const {
@@ -179,14 +180,31 @@ export default function RollSimulator(props) {
     const predictionsSection = predictions ? (
         <div className="RollSimulator-predictions">
             <dl>
-                {predictions.map((prediction, index) => (
-                    <div key={index}>
-                        <dt>{prediction.title}</dt>
-                        <dd>
-                            {Math.round(state.predictionResults[index] / 10)} %
-                        </dd>
-                    </div>
-                ))}
+                {sorted(
+                    predictions.map((p, i) => {
+                        return {
+                            ...p,
+                            probability: Math.round(
+                                state.predictionResults[i] / 10
+                            ),
+                        };
+                    }),
+                    (a, b) => b.probability - a.probability
+                ).map((prediction, index) => {
+                    if (!prediction.probability) {
+                        return null;
+                    }
+                    return (
+                        <div key={index}>
+                            <dt title={prediction.title}>
+                                {times(prediction.amount, () => (
+                                    <prediction.icon />
+                                ))}
+                            </dt>
+                            <dd>{prediction.probability} %</dd>
+                        </div>
+                    );
+                })}
             </dl>
         </div>
     ) : null;

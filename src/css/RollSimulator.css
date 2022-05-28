@@ -47,6 +47,7 @@
 
 .RollSimulator-predictions {
     margin-left: 3em;
+    color: var(--main-color);
 }
 
 .RollSimulator-predictions dl {
@@ -56,8 +57,7 @@
 }
 
 .RollSimulator-predictions dl div {
-    display: flex;
-    flex-direction: column;
+    text-align: center;
 }
 
 .RollSimulator-predictions dl div + div {
@@ -74,4 +74,11 @@
 .RollSimulator-predictions dt {
     color: #666;
     margin-bottom: 0.3em;
+}
+
+.RollSimulator-predictions dt svg,
+.RollSimulator-predictions dt svg * {
+    width: 1.3rem;
+    height: auto;
+    fill: var(--bold-line-color) !important;
 }
