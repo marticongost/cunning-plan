@@ -28,6 +28,9 @@ function App() {
                 <Tab name="attack-vehicle" title="Atac a vehicles">
                     Catacroc
                 </Tab>
+                <Tab name="range-in" title="Artilleria">
+                    Spam
+                </Tab>
                 <Tab name="attack-close-quarters" title="Atac cos a cos">
                     Zaaap
                 </Tab>
