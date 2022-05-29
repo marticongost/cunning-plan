@@ -214,42 +214,59 @@ export class DiceBucket {
             }
 
             if (effect.effect === "cancel") {
+                let exhausted = false;
                 const targetDice = bucket.getResults(effect.target);
 
-                for (let triggerDie of bucket.getResults(effect.trigger)) {
-                    let dieUsed = false;
+                function cancel(context) {
+                    let used = false;
                     let amount = effect.amount;
-                    const context = { effect, triggerDie };
 
                     if (amount === undefined) {
                         amount = 1;
                     } else if (amount === "all") {
                         amount = targetDice.length;
+                    } else if (typeof amount == "function") {
+                        amount = amount(bucket);
                     }
 
-                    while (amount--) {
+                    while (amount > 0) {
+                        amount--;
                         const targetDie = targetDice.shift();
                         if (targetDie) {
-                            dieUsed = true;
-                            bucketTransformed = true;
+                            used = true;
                             targetDie.cancel(context);
                             uses++;
                             if (effect.limit && uses === effect.limit) {
                                 exhausted = true;
-                                break;
+                                return used;
                             }
                         } else {
                             exhausted = true;
-                            break;
+                            return used;
                         }
                     }
 
-                    if (dieUsed) {
-                        triggerDie.cancel(context);
-                    }
+                    return used;
+                }
 
-                    if (exhausted) {
-                        break;
+                // Cancel up to effect.ammount dice per trigger die
+                if (effect.trigger) {
+                    for (let triggerDie of bucket.getResults(effect.trigger)) {
+                        const context = { effect, triggerDie };
+                        if (cancel(context)) {
+                            bucketTransformed = true;
+                            triggerDie.cancel(context);
+                        }
+                        if (exhausted) {
+                            break;
+                        }
+                    }
+                }
+                // General effect, doesn't require trigger dice
+                else {
+                    const context = { effect };
+                    if (cancel(context)) {
+                        bucketTransformed = true;
                     }
                 }
             } else if (effect.effect === "treatAs") {
