@@ -198,7 +198,9 @@ export class DiceBucket {
                 }
             }
 
-            return bucketWithBestScore;
+            if (bucketWithBestScore) {
+                return bucketWithBestScore;
+            }
         }
 
         const bucket = this.clone();
