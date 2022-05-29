@@ -1,15 +1,15 @@
-import { ReactComponent as CriticalIcon } from "./svg/dice/critical.svg";
-import { ReactComponent as SupressionIcon } from "./svg/dice/supression.svg";
-import { ReactComponent as MovementIcon } from "./svg/dice/movement.svg";
-import { ReactComponent as RangeIcon } from "./svg/dice/range.svg";
-import { ReactComponent as CoverIcon } from "./svg/dice/cover.svg";
-import { ReactComponent as VisibilityIcon } from "./svg/dice/visibility.svg";
-import { ReactComponent as ArmorIcon } from "./svg/dice/armor.svg";
-import { ReactComponent as ShockIcon } from "./svg/dice/shock.svg";
-import { ReactComponent as DisorderedIcon } from "./svg/dice/disordered.svg";
-import { ReactComponent as VeterancyIcon } from "./svg/dice/veterancy.svg";
-import { ReactComponent as HitIcon } from "./svg/dice/hit.svg";
-import { ReactComponent as SpecialIcon } from "./svg/dice/special.svg";
+import { ReactComponent as CriticalIcon } from "../svg/dice/critical.svg";
+import { ReactComponent as SupressionIcon } from "../svg/dice/supression.svg";
+import { ReactComponent as MovementIcon } from "../svg/dice/movement.svg";
+import { ReactComponent as RangeIcon } from "../svg/dice/range.svg";
+import { ReactComponent as CoverIcon } from "../svg/dice/cover.svg";
+import { ReactComponent as VisibilityIcon } from "../svg/dice/visibility.svg";
+import { ReactComponent as ArmorIcon } from "../svg/dice/armor.svg";
+import { ReactComponent as ShockIcon } from "../svg/dice/shock.svg";
+import { ReactComponent as DisorderedIcon } from "../svg/dice/disordered.svg";
+import { ReactComponent as VeterancyIcon } from "../svg/dice/veterancy.svg";
+import { ReactComponent as HitIcon } from "../svg/dice/hit.svg";
+import { ReactComponent as SpecialIcon } from "../svg/dice/special.svg";
 
 const diceTypes = {
     critical: {

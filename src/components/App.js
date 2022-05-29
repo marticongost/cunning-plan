@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { Tabs, Tab } from "./Tabs";
-import AttackSimulator from "./AttackSimulator";
+import { Tabs, Tab } from "./widgets/Tabs";
+import AttackSimulator from "./rolls/AttackSimulator";
 import "../css/App.css";
-import ShockSimulator from "./ShockSimulator";
+import ShockSimulator from "./rolls/ShockSimulator";
 
 function App() {
     useEffect(() => {

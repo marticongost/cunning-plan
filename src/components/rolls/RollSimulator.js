@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { diceTypes } from "../dicetypes";
+import { diceTypes } from "../../modules/dicetypes";
 import Dice from "./Dice";
-import { DiceBucket, Die } from "../dicebucket";
-import "../css/RollSimulator.css";
-import { times, sorted } from "../utils";
+import { DiceBucket, Die } from "../../modules/dicebucket";
+import "../../css/RollSimulator.css";
+import { times, sorted } from "../../modules/utils";
 
 export default function RollSimulator(props) {
     const {

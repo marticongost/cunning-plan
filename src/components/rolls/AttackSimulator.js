@@ -1,11 +1,11 @@
 import React from "react";
-import attackTypes from "../attacktypes";
+import attackTypes from "../../modules/attacktypes";
 import RollSimulator from "./RollSimulator";
-import { ReactComponent as CriticalIcon } from "../svg/dice/critical.svg";
-import { ReactComponent as HitIcon } from "../svg/dice/hit.svg";
-import { ReactComponent as SupressionIcon } from "../svg/dice/supression.svg";
-import { ReactComponent as SpecialIcon } from "../svg/dice/special.svg";
-import { diceTypes } from "../dicetypes";
+import { ReactComponent as CriticalIcon } from "../../svg/dice/critical.svg";
+import { ReactComponent as HitIcon } from "../../svg/dice/hit.svg";
+import { ReactComponent as SupressionIcon } from "../../svg/dice/supression.svg";
+import { ReactComponent as SpecialIcon } from "../../svg/dice/special.svg";
+import { diceTypes } from "../../modules/dicetypes";
 
 const INCOMING_FIRE_RESULTS = ["critical", "hit", "supression"];
 
