@@ -279,6 +279,19 @@ export class DiceBucket {
 
         return bucketTransformed ? bucket : null;
     }
+
+    log(title) {
+        console.group(title);
+        console.log(this.getResultCount());
+        for (let die of this) {
+            console.group(die.result.id);
+            console.log("Result", die.result);
+            console.log("Effective result", die.effectiveResult);
+            console.log("State", die.state);
+            console.groupEnd();
+        }
+        console.groupEnd();
+    }
 }
 
 export class Die {

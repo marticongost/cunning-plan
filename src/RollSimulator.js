@@ -100,9 +100,12 @@ export default function RollSimulator(props) {
         updateDiceBucket(rollingDiceBucket);
 
         function afterRoll() {
+            console.group("Roll");
+
             // End the roll animation
             const afterRollDiceBucket = rollingDiceBucket.clone();
             afterRollDiceBucket.setDiceState(Die.RESTING);
+            afterRollDiceBucket.log("Results");
             updateDiceBucket(afterRollDiceBucket);
 
             // Apply dice effects
@@ -116,16 +119,7 @@ export default function RollSimulator(props) {
                     let effectsDiceBucket =
                         afterRollDiceBucket.resolveEffects(diceEffectsForRoll);
                     if (effectsDiceBucket) {
-                        console.group("Dice effects");
-                        console.log(afterRollDiceBucket.getResultCount());
-                        for (let die of effectsDiceBucket) {
-                            console.log(
-                                die.result,
-                                die.effectiveResult,
-                                die.state
-                            );
-                        }
-                        console.groupEnd();
+                        effectsDiceBucket.log("Dice effects");
                         updateDiceBucket(effectsDiceBucket);
                         function changeStates() {
                             let changesRemain = false;
@@ -149,6 +143,7 @@ export default function RollSimulator(props) {
                     }
                 }
             }
+            console.groupEnd();
         }
         setTimeout(afterRoll, 200);
     }
