@@ -25,7 +25,9 @@ export function Page(props) {
                     selectedDocument={props.document}
                 />
             </header>
-            <main className="Page-main">{props.document.content}</main>
+            <main className="Page-main">
+                {props.document && props.document.content}
+            </main>
         </div>
     );
 }

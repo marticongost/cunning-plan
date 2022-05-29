@@ -29,6 +29,7 @@ ReactDOM.render(
     <React.StrictMode>
         <Router>
             <Routes>
+                <Route path="/" element={<Page documents={documents} />} />
                 {documents.map((document) => (
                     <Route
                         key={document.slug}
