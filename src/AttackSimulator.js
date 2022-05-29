@@ -9,6 +9,15 @@ import { diceTypes } from "./dicetypes";
 
 const INCOMING_FIRE_RESULTS = ["critical", "hit", "supression"];
 
+const DEFENSE_RESULTS = [
+    "movement",
+    "range",
+    "cover",
+    "visibility",
+    "shock",
+    "veterancy",
+];
+
 export default function AttackSimulator() {
     return (
         <RollSimulator
@@ -71,19 +80,31 @@ export default function AttackSimulator() {
                 },
                 {
                     effect: "cancel",
-                    trigger: [
-                        "movement",
-                        "range",
-                        "cover",
-                        "visibility",
-                        "shock",
-                    ],
+                    trigger: DEFENSE_RESULTS,
                     target: INCOMING_FIRE_RESULTS,
                 },
+                // Ignore leftover specials and defenses
                 {
-                    effect: "cancel",
-                    trigger: ["veterancy"],
-                    target: INCOMING_FIRE_RESULTS,
+                    effect: "ignore",
+                    target: ["special", ...DEFENSE_RESULTS],
+                    amount: "all",
+                },
+                // Ignore redundant hit and supression results if a critical was
+                // scored
+                {
+                    effect: "ignore",
+                    target: ["hit", "supression"],
+                    condition: (diceBucket) =>
+                        diceBucket.getEffectiveResultCount().critical,
+                    amount: "all",
+                },
+                // Ignore all criticals past the first one
+                {
+                    effect: "ignore",
+                    target: ["critical"],
+                    amount: (diceBucket) =>
+                        (diceBucket.getEffectiveResultCount().critical || 0) -
+                        1,
                 },
             ]}
             diceScore={(results) =>

@@ -213,7 +213,7 @@ export class DiceBucket {
                 continue;
             }
 
-            if (effect.effect === "cancel") {
+            if (effect.effect === "cancel" || effect.effect === "ignore") {
                 let exhausted = false;
                 const targetDice = bucket.getResults(effect.target);
 
@@ -234,7 +234,7 @@ export class DiceBucket {
                         const targetDie = targetDice.shift();
                         if (targetDie) {
                             used = true;
-                            targetDie.cancel(context);
+                            targetDie[effect.effect](context);
                             uses++;
                             if (effect.limit && uses === effect.limit) {
                                 exhausted = true;
@@ -365,6 +365,17 @@ export class Die {
             ...context,
             nextState: {
                 id: "canceled",
+                ...context,
+            },
+        });
+    }
+
+    ignore(context) {
+        this.pushState({
+            id: "ignoring",
+            ...context,
+            nextState: {
+                id: "ignored",
                 ...context,
             },
         });
