@@ -208,7 +208,10 @@ export class DiceBucket {
 
         for (let effect of diceEffects) {
             let uses = 0;
-            let exhausted = false;
+
+            if (effect.condition && !effect.condition(bucket)) {
+                continue;
+            }
 
             if (effect.effect === "cancel") {
                 const targetDice = bucket.getResults(effect.target);
