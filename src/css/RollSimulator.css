@@ -6,6 +6,7 @@
 .RollSimulator-controls {
     display: flex;
     align-items: center;
+    height: 3em;
 }
 
 .RollSimulator-controls > * + * {
