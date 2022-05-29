@@ -53,8 +53,8 @@ export default function AttackSimulator() {
             ]}
             scoringWeights={{
                 critical: 10000,
-                supression: 100,
-                hit: 1,
+                hit: 100,
+                supression: 1,
             }}
             diceEffects={(settings, diceAmounts, results) => [
                 {
