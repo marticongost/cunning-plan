@@ -1,8 +1,8 @@
 import React from "react";
-import { ReactComponent as AddIcon } from "./svg/icons/add.svg";
-import { ReactComponent as RemoveIcon } from "./svg/icons/remove.svg";
+import { ReactComponent as AddIcon } from "../svg/icons/add.svg";
+import { ReactComponent as RemoveIcon } from "../svg/icons/remove.svg";
 import Tooltip from "./Tooltip";
-import "./css/Dice.css";
+import "../css/Dice.css";
 
 const digits = "0123456789";
 
