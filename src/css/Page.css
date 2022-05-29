@@ -1,5 +1,5 @@
-.App-header {
-    padding: 2em;
+.Page-header {
+    padding-left: 2em;
     background-color: var(--header-background-color);
     background-image: linear-gradient(
         180deg,
@@ -8,9 +8,11 @@
     );
     border-bottom: 4px solid var(--header-line-color);
     color: white;
+    display: flex;
+    align-items: center;
 }
 
-.App-heading {
+.Page-heading {
     margin: 0;
     font-size: 1.6em;
     font-weight: 900;
@@ -18,7 +20,7 @@
     text-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-.App-main {
+.Page-main {
     padding: 2em;
 }
 

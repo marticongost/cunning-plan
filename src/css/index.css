@@ -8,6 +8,8 @@ html {
     --light-background-color: #c7c6ae;
     --header-background-color: #7a7850;
     --header-background-color2: #706e45;
+    --header-icon-color: #cac8bb;
+    --header-icon-selected-color: #ebdece;
     --header-line-color: #66653f;
     --main-color: #3d360b;
     --secondary-color: #8d8554;
