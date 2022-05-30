@@ -233,17 +233,19 @@ export class DiceBucket {
                         amount--;
                         const targetDie = targetDice.shift();
                         if (targetDie) {
-                            used = true;
-                            targetDie[effect.effect](context);
-                            uses++;
-                            if (effect.limit && uses === effect.limit) {
-                                exhausted = true;
-                                return used;
+                            if (!used) {
+                                used = true;
+                                uses++;
                             }
+                            targetDie[effect.effect](context);
                         } else {
                             exhausted = true;
-                            return used;
+                            break;
                         }
+                    }
+
+                    if (effect.limit && uses === effect.limit) {
+                        exhausted = true;
                     }
 
                     return used;
