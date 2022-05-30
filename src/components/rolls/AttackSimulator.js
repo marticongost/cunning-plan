@@ -320,8 +320,8 @@ function describeSpecialAttack(special) {
 
     if (special.effect === "cancel") {
         description.push("Cancel·la ");
-        if (special.limit) {
-            description.push(`fins a ${special.limit} `);
+        if (special.amount && special.amount > 1) {
+            description.push(`fins a ${special.amount} `);
         }
         renderDieFaces(special.target);
     } else if (special.effect === "treatAs") {
