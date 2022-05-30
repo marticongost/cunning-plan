@@ -1,154 +1,65 @@
-import { ReactComponent as CriticalIcon } from "../svg/dice/critical.svg";
-import { ReactComponent as SupressionIcon } from "../svg/dice/supression.svg";
-import { ReactComponent as MovementIcon } from "../svg/dice/movement.svg";
-import { ReactComponent as RangeIcon } from "../svg/dice/range.svg";
-import { ReactComponent as CoverIcon } from "../svg/dice/cover.svg";
-import { ReactComponent as VisibilityIcon } from "../svg/dice/visibility.svg";
-import { ReactComponent as ArmorIcon } from "../svg/dice/armor.svg";
-import { ReactComponent as ShockIcon } from "../svg/dice/shock.svg";
-import { ReactComponent as DisorderedIcon } from "../svg/dice/disordered.svg";
-import { ReactComponent as VeterancyIcon } from "../svg/dice/veterancy.svg";
-import { ReactComponent as HitIcon } from "../svg/dice/hit.svg";
-import { ReactComponent as SpecialIcon } from "../svg/dice/special.svg";
+import { diceFaces } from "./dicefaces";
 
 const diceTypes = {
     critical: {
         title: "Atac",
         shortcut: "A",
-        icon: CriticalIcon,
+        icon: diceFaces.critical.icon,
         faces: [
-            {
-                id: "critical",
-                icon: CriticalIcon,
-                number: 1,
-            },
-            {
-                id: "hit",
-                number: 1,
-                icon: HitIcon,
-            },
-            {
-                id: "supression",
-                icon: SupressionIcon,
-                number: 1,
-            },
-            {
-                id: "special",
-                icon: SpecialIcon,
-                number: 1,
-            },
+            { ...diceFaces.critical, number: 1 },
+            { ...diceFaces.hit, number: 1 },
+            { ...diceFaces.supression, number: 1 },
+            { ...diceFaces.special, number: 1 },
         ],
     },
     supression: {
         title: "Supressió",
         shortcut: "S",
-        icon: SupressionIcon,
+        icon: diceFaces.supression.icon,
         faces: [
-            {
-                id: "supression",
-                icon: SupressionIcon,
-                number: 3,
-            },
-            {
-                id: "hit",
-                icon: HitIcon,
-                number: 1,
-            },
-            {
-                id: "special",
-                icon: SpecialIcon,
-                number: 1,
-            },
+            { ...diceFaces.supression, number: 3 },
+            { ...diceFaces.hit, number: 1 },
+            { ...diceFaces.special, number: 1 },
         ],
     },
     movement: {
         title: "Moviment",
         shortcut: "M",
-        icon: MovementIcon,
-        faces: [
-            {
-                id: "movement",
-                icon: MovementIcon,
-                number: 3,
-            },
-        ],
+        icon: diceFaces.movement.icon,
+        faces: [{ ...diceFaces.movement, number: 3 }],
     },
     range: {
         title: "Distància",
         shortcut: "D",
-        icon: RangeIcon,
-        faces: [
-            {
-                id: "range",
-                icon: RangeIcon,
-                number: 3,
-            },
-        ],
+        icon: diceFaces.range.icon,
+        faces: [{ ...diceFaces.range, number: 3 }],
     },
     cover: {
         title: "Cobertura",
         shortcut: "C",
-        icon: CoverIcon,
-        faces: [
-            {
-                id: "cover",
-                icon: CoverIcon,
-                number: 3,
-            },
-        ],
+        icon: diceFaces.cover.icon,
+        faces: [{ ...diceFaces.cover, number: 3 }],
     },
     visibility: {
         title: "Visibilitat",
         shortcut: "V",
-        icon: VisibilityIcon,
-        faces: [
-            {
-                id: "visibility",
-                icon: VisibilityIcon,
-                number: 3,
-            },
-        ],
-    },
-    armor: {
-        title: "Blindatge",
-        shortcut: "B",
-        icon: ArmorIcon,
-        faces: [
-            {
-                id: "armor",
-                icon: ArmorIcon,
-                number: 6,
-            },
-        ],
+        icon: diceFaces.visibility.icon,
+        faces: [{ ...diceFaces.visibility, number: 3 }],
     },
     shock: {
         title: "Xoc",
         shortcut: "X",
-        icon: ShockIcon,
+        icon: diceFaces.shock.icon,
         faces: [
-            {
-                id: "shock",
-                icon: ShockIcon,
-                number: 2,
-            },
-            {
-                id: "disordered",
-                icon: DisorderedIcon,
-                number: 2,
-            },
+            { ...diceFaces.shock, number: 2 },
+            { ...diceFaces.disordered, number: 2 },
         ],
     },
     veterancy: {
         title: "Veterania",
         shortcut: "V",
-        icon: VeterancyIcon,
-        faces: [
-            {
-                id: "veterancy",
-                icon: VeterancyIcon,
-                number: 2,
-            },
-        ],
+        icon: diceFaces.veterancy.icon,
+        faces: [{ ...diceFaces.veterancy, number: 2 }],
     },
 };
 
