@@ -103,6 +103,8 @@ export default function Dice(props) {
                         key={index}
                         className="Dice-die"
                         data-state={die.state.id}
+                        title={getTitleFromDieState(die)}
+                        onClick={() => console.log(die)}
                     >
                         {die.result ? <die.result.icon /> : null}
                     </div>
@@ -110,4 +112,11 @@ export default function Dice(props) {
             </div>
         </div>
     );
+}
+
+function getTitleFromDieState(die) {
+    if (die.state.id === "canceled" && die.state.triggerDie) {
+        return "Cancel·lat per " + die.state.triggerDie.result.title;
+    }
+    return "";
 }
