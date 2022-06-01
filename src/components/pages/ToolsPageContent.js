@@ -2,10 +2,14 @@ import React from "react";
 import { Tabs, Tab } from "../widgets/Tabs";
 import AttackSimulator from "../rolls/AttackSimulator";
 import ShockSimulator from "../rolls/ShockSimulator";
+import CommandSimulator from "../rolls/CommandSimulator";
 
 export function ToolsPageContent(props) {
     return (
         <Tabs>
+            <Tab name="command" title="Ordres">
+                <CommandSimulator />
+            </Tab>
             <Tab name="attack-infantry" title="Atac a infanteria">
                 <AttackSimulator />
             </Tab>

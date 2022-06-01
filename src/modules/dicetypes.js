@@ -61,6 +61,27 @@ const diceTypes = {
         icon: diceFaces.veterancy.icon,
         faces: [{ ...diceFaces.veterancy, number: 2 }],
     },
+    command: {
+        title: "Ordres",
+        shortcut: "O",
+        icon: diceFaces.squad.icon,
+        faces: [
+            { ...diceFaces.team, number: 1 },
+            { ...diceFaces.squad, number: 2 },
+            { ...diceFaces.leader, number: 1 },
+            { ...diceFaces.feat, number: 1 },
+            { ...diceFaces.tactic, number: 1 },
+        ],
+    },
+    morale: {
+        title: "Moral",
+        shortcut: "M",
+        icon: diceFaces.retreat.icon,
+        faces: [
+            { ...diceFaces.retreat, number: 1 },
+            { ...diceFaces.confusion, number: 2 },
+        ],
+    },
 };
 
 const diceResults = {};

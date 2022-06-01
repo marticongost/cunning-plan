@@ -73,6 +73,14 @@
     --die-color: rgb(48, 59, 124);
 }
 
+.Dice[data-type="command"] {
+    --die-color: rgb(211, 179, 112);
+}
+
+.Dice[data-type="morale"] {
+    --die-color: rgb(54, 48, 44);
+}
+
 .Dice-die[data-state="rolling"] {
     animation: Dice-rolling linear 0.2s;
 }
