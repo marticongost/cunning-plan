@@ -61,16 +61,54 @@ const diceTypes = {
         icon: diceFaces.veterancy.icon,
         faces: [{ ...diceFaces.veterancy, number: 2 }],
     },
-    command: {
-        title: "Ordres",
-        shortcut: "O",
-        icon: diceFaces.squad.icon,
+    initiative: {
+        title: "Iniciativa",
+        shortcut: "I",
+        icon: diceFaces.team.icon,
         faces: [
+            { ...diceFaces.team, number: 2 },
+            { ...diceFaces.unit, number: 1 },
+            { ...diceFaces.willpower, number: 1 },
+        ],
+    },
+    manouver: {
+        title: "Maniobra",
+        shortcut: "M",
+        icon: diceFaces.unit.icon,
+        faces: [
+            { ...diceFaces.unit, number: 2 },
             { ...diceFaces.team, number: 1 },
-            { ...diceFaces.squad, number: 2 },
-            { ...diceFaces.leader, number: 1 },
-            { ...diceFaces.feat, number: 1 },
+            { ...diceFaces.willpower, number: 1 },
+        ],
+    },
+    inspiration: {
+        title: "Inspiració",
+        shortcut: "p",
+        icon: diceFaces.inspiration.icon,
+        faces: [
+            { ...diceFaces.inspiration, number: 2 },
+            { ...diceFaces.team, number: 1 },
+            { ...diceFaces.willpower, number: 1 },
+        ],
+    },
+    leadership: {
+        title: "Lideratge",
+        shortcut: "L",
+        icon: diceFaces.leader.icon,
+        faces: [
+            { ...diceFaces.leader, number: 2 },
             { ...diceFaces.tactic, number: 1 },
+            { ...diceFaces.willpower, number: 1 },
+        ],
+    },
+    tactics: {
+        title: "Tactics",
+        shortcut: "T",
+        icon: diceFaces.tactic.icon,
+        faces: [
+            { ...diceFaces.tactic, number: 2 },
+            { ...diceFaces.leader, number: 1 },
+            { ...diceFaces.willpower, number: 1 },
         ],
     },
     morale: {

@@ -73,8 +73,12 @@
     --die-color: rgb(48, 59, 124);
 }
 
-.Dice[data-type="command"] {
-    --die-color: rgb(211, 179, 112);
+.Dice[data-type="initiative"],
+.Dice[data-type="manouver"],
+.Dice[data-type="inspiration"],
+.Dice[data-type="leadership"],
+.Dice[data-type="tactics"] {
+    --die-color: rgb(218, 166, 56);
 }
 
 .Dice[data-type="morale"] {

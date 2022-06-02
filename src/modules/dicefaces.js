@@ -10,10 +10,11 @@ import { ReactComponent as VeterancyIcon } from "../svg/dice/veterancy.svg";
 import { ReactComponent as HitIcon } from "../svg/dice/hit.svg";
 import { ReactComponent as SpecialIcon } from "../svg/dice/special.svg";
 import { ReactComponent as TeamIcon } from "../svg/dice/team.svg";
-import { ReactComponent as SquadIcon } from "../svg/dice/squad.svg";
-import { ReactComponent as FeatIcon } from "../svg/dice/feat.svg";
+import { ReactComponent as UnitIcon } from "../svg/dice/unit.svg";
+import { ReactComponent as InspirationIcon } from "../svg/dice/inspiration.svg";
 import { ReactComponent as TacticIcon } from "../svg/dice/tactic.svg";
 import { ReactComponent as LeaderIcon } from "../svg/dice/leader.svg";
+import { ReactComponent as WillpowerIcon } from "../svg/dice/willpower.svg";
 import { ReactComponent as RetreatIcon } from "../svg/dice/retreat.svg";
 import { ReactComponent as ConfusionIcon } from "../svg/dice/confusion.svg";
 
@@ -70,9 +71,9 @@ export const diceFaces = {
         title: "Equip",
         icon: TeamIcon,
     },
-    squad: {
-        title: "Esquadra",
-        icon: SquadIcon,
+    unit: {
+        title: "Unitat",
+        icon: UnitIcon,
     },
     leader: {
         title: "Líder",
@@ -82,9 +83,13 @@ export const diceFaces = {
         title: "Tàctica",
         icon: TacticIcon,
     },
-    feat: {
-        title: "Proesa",
-        icon: FeatIcon,
+    inspiration: {
+        title: "Inspiració",
+        icon: InspirationIcon,
+    },
+    willpower: {
+        title: "Voluntat",
+        icon: WillpowerIcon,
     },
     // Force morale
     retreat: {

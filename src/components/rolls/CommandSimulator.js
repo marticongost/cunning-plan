@@ -7,14 +7,21 @@ export default function CommandSimulator() {
             diceGroups={[
                 {
                     id: "command",
-                    diceTypes: ["command", "morale"],
+                    diceTypes: [
+                        "initiative",
+                        "manouver",
+                        "inspiration",
+                        "leadership",
+                        "tactics",
+                        "morale",
+                    ],
                 },
             ]}
             diceEffects={(settings, diceAmounts, results) => [
                 {
                     effect: "cancel",
                     trigger: ["confusion"],
-                    target: ["tactic", "squad"],
+                    target: ["willpower", "inspiration", "tactic", "unit"],
                 },
                 {
                     effect: "ignore",
