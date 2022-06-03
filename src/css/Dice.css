@@ -195,6 +195,8 @@
     width: 17em;
     margin-left: 2em;
     display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
 }
 
 .Dice-die {
@@ -205,10 +207,6 @@
     padding: 0.3em;
     height: 2.6em;
     width: 2.6em;
-}
-
-.Dice-die + .Dice-die {
-    margin-left: 0.3em;
 }
 
 .Dice-die svg {
