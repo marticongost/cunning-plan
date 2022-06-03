@@ -404,7 +404,7 @@ export class Die {
             value =
                 window.cunningplan.fixedRolls[window.cunningplan.currentRoll++];
         } else {
-            value = Math.floor(Math.random() * 6) + 1;
+            value = Math.floor(Math.random() * this.diceType.totalSides) + 1;
         }
         window.cunningplan.lastRolls.push(value);
         let n = 0;

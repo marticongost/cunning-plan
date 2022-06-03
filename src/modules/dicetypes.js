@@ -98,8 +98,10 @@ const diceTypes = {
 const diceResults = {};
 
 for (let id in diceTypes) {
-    diceTypes[id].id = id;
-    for (let face of diceTypes[id].faces) {
+    const diceType = diceTypes[id];
+    diceType.id = id;
+    diceType.totalSides = diceType.totalSides || 6;
+    for (let face of diceType.faces) {
         diceResults[face.id] = face;
     }
 }
