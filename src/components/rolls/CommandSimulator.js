@@ -7,14 +7,7 @@ export default function CommandSimulator() {
             diceGroups={[
                 {
                     id: "command",
-                    diceTypes: [
-                        "initiative",
-                        "manouver",
-                        "inspiration",
-                        "leadership",
-                        "tactics",
-                        "morale",
-                    ],
+                    diceTypes: ["command", "morale"],
                 },
             ]}
             diceEffects={(settings, diceAmounts, results) => [

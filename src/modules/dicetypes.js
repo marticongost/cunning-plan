@@ -71,43 +71,16 @@ const diceTypes = {
             { ...diceFaces.willpower, number: 1 },
         ],
     },
-    manouver: {
-        title: "Maniobra",
-        shortcut: "M",
+    command: {
+        title: "Comandament",
+        shortcut: "C",
         icon: diceFaces.unit.icon,
         faces: [
-            { ...diceFaces.unit, number: 2 },
+            { ...diceFaces.unit, number: 1 },
             { ...diceFaces.team, number: 1 },
-            { ...diceFaces.willpower, number: 1 },
-        ],
-    },
-    inspiration: {
-        title: "Inspiració",
-        shortcut: "p",
-        icon: diceFaces.inspiration.icon,
-        faces: [
-            { ...diceFaces.inspiration, number: 2 },
-            { ...diceFaces.team, number: 1 },
-            { ...diceFaces.willpower, number: 1 },
-        ],
-    },
-    leadership: {
-        title: "Lideratge",
-        shortcut: "L",
-        icon: diceFaces.leader.icon,
-        faces: [
-            { ...diceFaces.leader, number: 2 },
-            { ...diceFaces.tactic, number: 1 },
-            { ...diceFaces.willpower, number: 1 },
-        ],
-    },
-    tactics: {
-        title: "Tactics",
-        shortcut: "T",
-        icon: diceFaces.tactic.icon,
-        faces: [
-            { ...diceFaces.tactic, number: 2 },
             { ...diceFaces.leader, number: 1 },
+            { ...diceFaces.inspiration, number: 1 },
+            { ...diceFaces.tactic, number: 1 },
             { ...diceFaces.willpower, number: 1 },
         ],
     },
