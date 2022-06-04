@@ -1,0 +1,99 @@
+title: Cunning Plan
+sections:
+  - id: introduction
+    title: Introducció
+  - id: battles
+    title: Batalles
+  - id: deployment
+    title: Desplegament
+  - id: combat
+    title: Combat
+    sections:
+      - id: combat-sequence
+        title: Seqüència del combat
+        sections:
+          - id: command-phase
+            title: Fase de comandament
+            sections:
+              - id: command-dice
+                title: Daus de comandament
+              - id: defeat-dice
+                title: Daus de derrota
+          - id: action-phase
+            title: Fase d'acció
+            sections:
+              - id: unit-activation
+                title: Activació d'unitats
+                sections:
+                  - id: shock-test
+                    title: Tirada de xoc
+              - id: unit-actions
+                title: Accions de les unitats
+                sections:
+                  - id: unit-action-move
+                    title: Moure
+                  - id: unit-action-shoot
+                    title: Disparar
+                  - id: unit-action-assault
+                    title: Assaltar
+                  - id: unit-action-go-to-ground
+                    title: Cos a terra
+              - id: leader-actions
+                title: Accions dels líders
+                sections:
+                  - id: leader-action-direct-order
+                    title: Ordre directa
+                  - id: leader-action-regroup
+                    title: Reagrupar
+                  - id: leader-action-direct-fire
+                    title: Dirigir el foc
+                  - id: leader-action-lead-the-charge
+                    title: Liderar assalt
+                  - id: leader-action-request-artillery
+                    title: Sol·licitar artilleria
+                  - id: leader-action-request-air-support
+                    title: Sol·licitar suport aeri
+              - id: tactical-actions
+                title: Accions tàctiques
+                sections:
+                  - id: tactical-action-seize-initiative
+                    title: Prendre la iniciativa
+                  - id: tactical-action-general-advance
+                    title: Avanç general
+                  - id: tactical-action-fire-at-will
+                    title: Foc a discreció
+                  - id: tactical-action-hold-position
+                    title: Defensar la posició
+              - id: reactions
+                title: Reaccions
+      - id: shooting
+        title: Disparar
+        sections:
+          - id: shooting-select-target
+            title: Escollir el blanc
+          - id: shooting-attack-roll
+            title: Tirada d'atac
+            sections:
+              - id: attack-dice
+                title: Daus d'atac
+              - id: suppression-dice
+                title: Daus de supressió
+          - id: shooting-defense-roll
+            title: Tirada de defensa
+            sections:
+              - id: shooting-defense-veterancy
+                title: Veterania
+              - id: shooting-defense-cover
+                title: Cobertura
+              - id: shooting-defense-range
+                title: Distància
+              - id: shooting-defense-visibility
+                title: Visibilitat
+              - id: shooting-defense-movement
+                title: Moviment
+              - id: shooting-defense-shock
+                title: Xoc
+          - id: shooting-apply-result
+            title: Aplicar els resultats
+      - id: assault
+        title: Assalt
