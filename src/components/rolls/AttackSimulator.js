@@ -18,6 +18,9 @@ const DEFENSE_RESULTS = [
     "veterancy",
 ];
 
+const MAX_HITS = 3;
+const MAX_SUPRESSION = 3;
+
 export default function AttackSimulator() {
     return (
         <RollSimulator
@@ -105,6 +108,23 @@ export default function AttackSimulator() {
                     amount: (diceBucket) =>
                         (diceBucket.getEffectiveResultCount().critical || 0) -
                         1,
+                },
+                // Ignore all hits past the third one
+                {
+                    effect: "ignore",
+                    target: ["hit"],
+                    amount: (diceBucket) =>
+                        (diceBucket.getEffectiveResultCount().hit || 0) -
+                        MAX_HITS,
+                },
+                // Ignore excessive suppression
+                {
+                    effect: "ignore",
+                    target: ["supression"],
+                    amount: (diceBucket) =>
+                        (diceBucket.getEffectiveResultCount().hit || 0) +
+                        (diceBucket.getEffectiveResultCount().supression || 0) -
+                        MAX_SUPRESSION,
                 },
                 // Ignore all additional disordered results
                 {
