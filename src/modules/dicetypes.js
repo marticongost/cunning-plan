@@ -61,16 +61,6 @@ const diceTypes = {
         icon: diceFaces.veterancy.icon,
         faces: [{ ...diceFaces.veterancy, number: 2 }],
     },
-    initiative: {
-        title: "Iniciativa",
-        shortcut: "I",
-        icon: diceFaces.team.icon,
-        faces: [
-            { ...diceFaces.team, number: 2 },
-            { ...diceFaces.unit, number: 1 },
-            { ...diceFaces.willpower, number: 1 },
-        ],
-    },
     command: {
         title: "Comandament",
         shortcut: "C",
@@ -91,8 +81,15 @@ const diceTypes = {
         icon: diceFaces.retreat.icon,
         faces: [
             { ...diceFaces.retreat, number: 1 },
+            { ...diceFaces.delay, number: 1 },
             { ...diceFaces.confusion, number: 2 },
         ],
+    },
+    initiative: {
+        title: "Iniciativa",
+        shortcut: "I",
+        icon: diceFaces.delay.icon,
+        faces: [{ ...diceFaces.delay, number: 5 }],
     },
 };
 

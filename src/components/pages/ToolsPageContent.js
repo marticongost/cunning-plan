@@ -3,12 +3,14 @@ import { Tabs, Tab } from "../widgets/Tabs";
 import AttackSimulator from "../rolls/AttackSimulator";
 import ShockSimulator from "../rolls/ShockSimulator";
 import CommandSimulator from "../rolls/CommandSimulator";
+import InitiativeSimulator from "../rolls/InitiativeSimulator";
 
 export function ToolsPageContent(props) {
     return (
         <Tabs>
             <Tab name="command" title="Ordres">
                 <CommandSimulator />
+                <InitiativeSimulator />
             </Tab>
             <Tab name="attack-infantry" title="Atac a infanteria">
                 <AttackSimulator />

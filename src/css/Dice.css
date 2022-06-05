@@ -81,6 +81,10 @@
     --die-color: rgb(54, 48, 44);
 }
 
+.Dice[data-type="initiative"] {
+    --die-color: rgb(80, 9, 20);
+}
+
 .Dice-die[data-state="rolling"] {
     animation: Dice-rolling linear 0.2s;
 }

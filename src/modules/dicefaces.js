@@ -17,6 +17,7 @@ import { ReactComponent as LeaderIcon } from "../svg/dice/leader.svg";
 import { ReactComponent as WillpowerIcon } from "../svg/dice/willpower.svg";
 import { ReactComponent as RetreatIcon } from "../svg/dice/retreat.svg";
 import { ReactComponent as ConfusionIcon } from "../svg/dice/confusion.svg";
+import { ReactComponent as DelayIcon } from "../svg/dice/delay.svg";
 
 export const diceFaces = {
     // Attack
@@ -99,6 +100,11 @@ export const diceFaces = {
     confusion: {
         title: "Confusió",
         icon: ConfusionIcon,
+    },
+    // Initiative
+    delay: {
+        title: "Temps",
+        icon: DelayIcon,
     },
 };
 
