@@ -58,7 +58,7 @@ export default function Dice(props) {
                 <Tooltip
                     content={type.faces.map((face, index) => (
                         <div key={index} className="Dice-faceCount">
-                            {<face.icon />} x {face.number}
+                            {<face.icon />} {face.number} / {type.totalSides}
                         </div>
                     ))}
                 >

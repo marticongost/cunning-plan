@@ -141,6 +141,7 @@
 .Dice-faceCount {
     display: flex;
     color: #bbb;
+    white-space: nowrap;
 }
 
 .Dice-faceCount + .Dice-faceCount {
