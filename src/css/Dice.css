@@ -43,7 +43,10 @@
     align-items: center;
     padding: 1em;
     padding-left: 0.5em;
-    outline-color: var(--subtle-line-color);
+}
+
+.Dice:focus {
+    outline: 1px dashed var(--subtle-line-color);
 }
 
 .Dice[data-type="critical"] {
@@ -115,7 +118,7 @@
 }
 
 .Dice-type {
-    width: 4em;
+    width: 6em;
     margin-right: 1em;
     position: relative;
 }

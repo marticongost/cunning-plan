@@ -51,7 +51,7 @@ export default function Dice(props) {
             className="Dice"
             data-type={type.id}
             data-shortcut={type.shortcut.toLowerCase()}
-            tabIndex="-1"
+            tabIndex="0"
             onKeyDown={handleKeyDown}
         >
             <div className="Dice-type">
