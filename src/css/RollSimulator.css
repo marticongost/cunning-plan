@@ -1,3 +1,8 @@
+.RollSimulator {
+    max-width: 90em;
+    margin: auto;
+}
+
 .RollSimulator + .RollSimulator {
     margin-top: 2em;
 }
@@ -20,6 +25,10 @@
 .RollSimulator-diceGroups {
     display: flex;
     margin-top: 2em;
+}
+
+.RollSimulator-diceGroup {
+    flex: 1;
 }
 
 .RollSimulator-diceGroup + .RollSimulator-diceGroup {
