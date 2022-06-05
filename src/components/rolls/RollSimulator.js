@@ -58,6 +58,28 @@ export default function RollSimulator(props) {
         setState(Object.assign({}, state, { diceBucket }));
     }
 
+    function transitionDiceBucket(targetDiceBucket) {
+        updateDiceBucket(targetDiceBucket);
+        function changeStates() {
+            let changesRemain = false;
+            targetDiceBucket = targetDiceBucket.clone();
+            for (let die of targetDiceBucket) {
+                if (die.state.nextState) {
+                    die.state = die.state.nextState;
+                    if (die.state.replacement) {
+                        die.result = die.state.replacement;
+                    }
+                    changesRemain = changesRemain || die.state.nextState;
+                }
+            }
+            updateDiceBucket(targetDiceBucket);
+            if (changesRemain) {
+                setTimeout(changeStates, 200);
+            }
+        }
+        setTimeout(changeStates, 200);
+    }
+
     function getPredictionResults(state) {
         let bruteForcePredictionRoll = state.diceBucket.clone();
         const chances = [];
@@ -121,32 +143,19 @@ export default function RollSimulator(props) {
                         afterRollDiceBucket.resolveEffects(diceEffectsForRoll);
                     if (effectsDiceBucket) {
                         effectsDiceBucket.log("Dice effects");
-                        updateDiceBucket(effectsDiceBucket);
-                        function changeStates() {
-                            let changesRemain = false;
-                            effectsDiceBucket = effectsDiceBucket.clone();
-                            for (let die of effectsDiceBucket) {
-                                if (die.state.nextState) {
-                                    die.state = die.state.nextState;
-                                    if (die.state.replacement) {
-                                        die.result = die.state.replacement;
-                                    }
-                                    changesRemain =
-                                        changesRemain || die.state.nextState;
-                                }
-                            }
-                            updateDiceBucket(effectsDiceBucket);
-                            if (changesRemain) {
-                                setTimeout(changeStates, 200);
-                            }
-                        }
-                        setTimeout(changeStates, 200);
+                        transitionDiceBucket(effectsDiceBucket);
                     }
                 }
             }
             console.groupEnd();
         }
         setTimeout(afterRoll, 200);
+    }
+
+    function handleDieClicked(die) {
+        console.log(die);
+        die.ignore();
+        transitionDiceBucket(state.diceBucket);
     }
 
     function diceList(types) {
@@ -161,6 +170,7 @@ export default function RollSimulator(props) {
                     onAmountChanged={(amount) =>
                         updateDiceAmounts({ [diceTypeId]: amount })
                     }
+                    onDieClicked={handleDieClicked}
                 />
             );
         }

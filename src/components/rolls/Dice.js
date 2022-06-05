@@ -7,7 +7,7 @@ import "../../css/Dice.css";
 const digits = "0123456789";
 
 export default function Dice(props) {
-    const { dice, type, onAmountChanged } = props;
+    const { dice, type, onAmountChanged, onDieClicked } = props;
 
     function setAmount(amount) {
         if (onAmountChanged) {
@@ -99,17 +99,30 @@ export default function Dice(props) {
             </div>
             <div className="Dice-dice">
                 {dice.map((die, index) => (
-                    <div
-                        key={index}
-                        className="Dice-die"
-                        data-state={die.state.id}
-                        title={getTitleFromDieState(die)}
-                        onClick={() => console.log(die)}
-                    >
-                        {die.result ? <die.result.icon /> : null}
-                    </div>
+                    <Die key={index} die={die} onDieClicked={onDieClicked} />
                 ))}
             </div>
+        </div>
+    );
+}
+
+function Die(props) {
+    const { die, onDieClicked } = props;
+
+    function handleDieClicked(e) {
+        if (onDieClicked) {
+            onDieClicked(die);
+        }
+    }
+
+    return (
+        <div
+            className="Dice-die"
+            data-state={die.state.id}
+            title={getTitleFromDieState(die)}
+            onClick={handleDieClicked}
+        >
+            {die.result ? <die.result.icon /> : null}
         </div>
     );
 }
