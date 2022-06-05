@@ -54,11 +54,7 @@
 }
 
 .Dice[data-type="supression"] {
-    --die-color: rgb(218, 142, 19);
-}
-
-.Dice[data-type="armor"] {
-    --die-color: rgb(77, 62, 36);
+    --die-color: rgb(222, 132, 41);
 }
 
 .Dice[data-type="shock"] {
@@ -77,11 +73,11 @@
 }
 
 .Dice[data-type="command"] {
-    --die-color: rgb(218, 166, 56);
+    --die-color: rgb(54, 48, 44);
 }
 
 .Dice[data-type="morale"] {
-    --die-color: rgb(54, 48, 44);
+    --die-color: rgb(105, 71, 41);
 }
 
 .Dice[data-type="initiative"] {
