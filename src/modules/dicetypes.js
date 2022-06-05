@@ -89,7 +89,8 @@ const diceTypes = {
         title: "Iniciativa",
         shortcut: "I",
         icon: diceFaces.delay.icon,
-        faces: [{ ...diceFaces.delay, number: 5 }],
+        totalSides: 8,
+        faces: [{ ...diceFaces.delay, number: 6 }],
     },
 };
 
