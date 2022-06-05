@@ -1,3 +1,11 @@
+.RulesPageContent a {
+    color: var(--link-color);
+}
+
+.RulesPageContent a:hover {
+    color: var(--main-hover-color);
+}
+
 .RulesPageContent h1 {
     color: var(--main-color);
     font-family: "Montserrat";

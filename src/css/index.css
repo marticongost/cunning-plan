@@ -13,10 +13,12 @@ html {
     --header-icon-selected-color: #ebdece;
     --header-line-color: #66653f;
     --main-color: #3d360b;
+    --main-hover-color: #706206;
     --secondary-color: #8d8554;
     --subtle-text-color: #7c7b5c;
     --bold-line-color: #8d8c6a;
     --subtle-line-color: #afad8d;
+    --link-color: var(--main-color);
     background-color: var(--light-background-color);
 }
 
