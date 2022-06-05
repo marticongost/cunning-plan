@@ -6,8 +6,8 @@ export default function Tooltip(props) {
     return (
         <div className="Tooltip">
             {children}
-            <div className="Tooltip-frame">
-                <div className="Tooltip-content">{content}</div>
+            <div className="Tooltip-container">
+                <div className="Tooltip-frame">{content}</div>
             </div>
         </div>
     );
