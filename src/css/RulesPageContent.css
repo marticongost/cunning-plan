@@ -1,3 +1,11 @@
+.RulesPageContent {
+    line-height: 150%;
+}
+
+.RulesPageContent .Panel .Panel {
+    display: contents;
+}
+
 .RulesPageContent a {
     color: var(--link-color);
 }
@@ -9,6 +17,7 @@
 .RulesPageContent h1 {
     color: var(--main-color);
     font-family: "Montserrat";
+    margin-bottom: 0.8em;
 }
 
 .RulesPageContent > h1 {
@@ -27,9 +36,15 @@
     margin-top: 2em;
 }
 
+.RulesPageContent > section > .Markdown:last-child > *:last-child,
+.RulesPageContent > section > *:last-child {
+    margin-bottom: 0;
+}
+
 .RulesPageContent > section > h1 {
     margin-top: 0;
     font-size: 3.2em;
+    margin-bottom: 1.4em;
 }
 
 .RulesPageContent > section > section > h1 {
@@ -59,4 +74,19 @@
     > section
     > h1 {
     font-size: 1em;
+}
+
+.RulesPageContent blockquote {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 1em;
+    margin: 0;
+}
+
+.RulesPageContent blockquote > *:first-child {
+    margin-top: 0;
+}
+
+.RulesPageContent blockquote > *:last-child {
+    margin-bottom: 0;
 }

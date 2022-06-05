@@ -1,6 +1,7 @@
 import React from "react";
 import toc from "../../rules/index.js";
 import "../../css/RulesPageContent.css";
+import Panel from "../widgets/Panel.js";
 import Markdown from "../widgets/Markdown.js";
 
 export function RulesPageContent(props) {
@@ -22,10 +23,10 @@ function Sections(props) {
 
 function Section(props) {
     return (
-        <section id={props.section.id}>
+        <Panel id={props.section.id}>
             <h1>{props.section.title}</h1>
             <Markdown content={props.section.content} />
             <Sections sections={props.section.sections} />
-        </section>
+        </Panel>
     );
 }
