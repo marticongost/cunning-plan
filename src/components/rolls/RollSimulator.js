@@ -158,6 +158,14 @@ export default function RollSimulator(props) {
         transitionDiceBucket(state.diceBucket);
     }
 
+    function handleKeyDown(e) {
+        if (e.key === "Enter") {
+            handleRollButtonClick(e);
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }
+
     function diceList(types) {
         const elements = [];
         for (let diceTypeId of types) {
@@ -224,7 +232,7 @@ export default function RollSimulator(props) {
     ) : null;
 
     return (
-        <Panel className="RollSimulator">
+        <Panel className="RollSimulator" onKeyDown={handleKeyDown}>
             <div className="RollSimulator-controls">
                 {controls}
                 <button
