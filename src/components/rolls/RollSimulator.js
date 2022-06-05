@@ -3,6 +3,7 @@ import { diceTypes } from "../../modules/dicetypes";
 import Dice from "./Dice";
 import { DiceBucket, Die } from "../../modules/dicebucket";
 import "../../css/RollSimulator.css";
+import Panel from "../widgets/Panel";
 import { times, sorted } from "../../modules/utils";
 
 export default function RollSimulator(props) {
@@ -213,7 +214,7 @@ export default function RollSimulator(props) {
     ) : null;
 
     return (
-        <div className="RollSimulator">
+        <Panel className="RollSimulator">
             <div className="RollSimulator-controls">
                 {controls}
                 <button
@@ -242,6 +243,6 @@ export default function RollSimulator(props) {
                     </section>
                 ))}
             </div>
-        </div>
+        </Panel>
     );
 }
