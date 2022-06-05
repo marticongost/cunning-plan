@@ -106,6 +106,12 @@ export default function AttackSimulator() {
                         (diceBucket.getEffectiveResultCount().critical || 0) -
                         1,
                 },
+                // Ignore all additional disordered results
+                {
+                    effect: "ignore",
+                    target: ["disordered"],
+                    amount: "all",
+                },
             ]}
             diceScore={(results) =>
                 (results.critical || 0) * 100000 +
